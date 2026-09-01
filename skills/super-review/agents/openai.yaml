@@ -1,0 +1,3 @@
+interface:
+  display_name: "Comprehensive Code Review"
+  short_description: "Exhaustive provider-neutral GitHub PR review"

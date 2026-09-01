@@ -1,0 +1,113 @@
+version: 1
+
+normalized_values:
+  capability_tiers:
+    - routine
+    - advanced
+    - frontier
+  reasoning_efforts:
+    - low
+    - medium
+    - high
+    - maximum
+  execution_modes:
+    - single_agent
+    - multi_agent
+
+roles:
+  contract_extraction:
+    capability_tier: routine
+    reasoning_effort: high
+    execution_mode: single_agent
+  rule_discovery:
+    capability_tier: routine
+    reasoning_effort: high
+    execution_mode: single_agent
+  code_quality_mechanical_prepass:
+    capability_tier: routine
+    reasoning_effort: high
+    execution_mode: single_agent
+  citation_validation:
+    capability_tier: routine
+    reasoning_effort: high
+    execution_mode: single_agent
+  testing:
+    capability_tier: advanced
+    reasoning_effort: high
+    execution_mode: single_agent
+  code_quality:
+    capability_tier: advanced
+    reasoning_effort: high
+    execution_mode: single_agent
+  ui_accessibility:
+    capability_tier: advanced
+    reasoning_effort: high
+    execution_mode: single_agent
+  performance_reliability:
+    capability_tier: advanced
+    reasoning_effort: high
+    execution_mode: single_agent
+  historical_context:
+    capability_tier: advanced
+    reasoning_effort: high
+    execution_mode: single_agent
+  finding_adjudication:
+    capability_tier: advanced
+    reasoning_effort: high
+    execution_mode: single_agent
+  correctness:
+    capability_tier: frontier
+    reasoning_effort: high
+    execution_mode: single_agent
+  security:
+    capability_tier: frontier
+    reasoning_effort: high
+    execution_mode: single_agent
+  architecture:
+    capability_tier: frontier
+    reasoning_effort: high
+    execution_mode: single_agent
+  synthesis:
+    capability_tier: frontier
+    reasoning_effort: high
+    execution_mode: single_agent
+  critical_finding_adjudication:
+    capability_tier: frontier
+    reasoning_effort: maximum
+    execution_mode: single_agent
+
+profiles:
+  economy:
+    role_overrides:
+      correctness:
+        capability_tier: advanced
+      security:
+        capability_tier: advanced
+      architecture:
+        capability_tier: advanced
+      synthesis:
+        capability_tier: advanced
+  balanced:
+    role_overrides: {}
+  maximum:
+    role_overrides:
+      testing:
+        capability_tier: frontier
+      code_quality:
+        capability_tier: frontier
+      ui_accessibility:
+        capability_tier: frontier
+      performance_reliability:
+        capability_tier: frontier
+      historical_context:
+        capability_tier: frontier
+      finding_adjudication:
+        capability_tier: frontier
+      correctness:
+        reasoning_effort: maximum
+      security:
+        reasoning_effort: maximum
+      architecture:
+        reasoning_effort: maximum
+      synthesis:
+        reasoning_effort: maximum

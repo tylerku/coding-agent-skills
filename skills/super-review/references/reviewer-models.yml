@@ -1,0 +1,82 @@
+version: 1
+
+metadata:
+  verified_on: "2026-08-31"
+  sources:
+    openai: https://developers.openai.com/api/docs/guides/latest-model
+    anthropic: https://platform.claude.com/docs/en/models/overview
+    xai: https://docs.x.ai/developers/model-capabilities/text/reasoning
+
+providers:
+  openai:
+    preferred_runner: codex
+    capability_tiers:
+      routine:
+        model: gpt-5.6-luna
+      advanced:
+        model: gpt-5.6-terra
+      frontier:
+        model: gpt-5.6-sol
+    reasoning_effort_map:
+      low: low
+      medium: medium
+      high: high
+      maximum: max
+
+  anthropic:
+    preferred_runner: claude_code
+    capability_tiers:
+      routine:
+        model: claude-haiku-4-5
+      advanced:
+        model: claude-sonnet-5
+      frontier:
+        model: claude-fable-5
+        alternatives:
+          - claude-opus-5
+    reasoning_effort_map:
+      low: low
+      medium: medium
+      high: high
+      maximum: max
+    notes:
+      - The runner must translate normalized effort using capabilities supported by the selected Claude model.
+      - When a selected model cannot represent the requested effort, use a configured same-or-higher-capability model or mark the role owed.
+
+  xai:
+    preferred_runner: grok_build
+    capability_tiers:
+      routine:
+        model: grok-4.6
+      advanced:
+        model: grok-4.6
+      frontier:
+        model: grok-4.6
+    reasoning_effort_map:
+      low: low
+      medium: medium
+      high: high
+      maximum: xhigh
+    optional_execution_modes:
+      multi_agent:
+        model: grok-4.20-multi-agent
+        semantics: reasoning_effort_controls_agent_count
+    notes:
+      - Do not use the multi-agent effort setting as a reasoning-depth substitute.
+
+runners:
+  codex:
+    provider: openai
+  claude_code:
+    provider: anthropic
+  grok_build:
+    provider: xai
+  pi:
+    provider: configurable
+    requirement: Resolve its concrete provider model through project or user configuration before use.
+
+fallback_policy:
+  allow_same_or_higher_capability: true
+  allow_lower_capability: false
+  require_disclosure: true
+  respect_user_cost_ceiling: true
