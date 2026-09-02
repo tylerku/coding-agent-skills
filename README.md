@@ -8,6 +8,7 @@ A versioned collection of individually installable coding-agent skills.
 | --- | --- | --- |
 | `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.1.0` |
 | `super-review` | Comprehensive, provider-neutral review of open GitHub pull requests | `super-review-v1.1.0` |
+| `smoke-test` | Runtime journey testing with checkpoint screenshots and optional PR evidence | `smoke-test-v1.0.0` |
 
 ## Install one skill in Codex
 
@@ -18,6 +19,10 @@ Ask Codex:
 Or install the focused gate:
 
 > Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.1.0/skills/pr-review`.
+
+Or install the runtime journey tester:
+
+> Use `$skill-installer` to install `smoke-test` from `https://github.com/tylerku/coding-agent-skills/tree/smoke-test-v1.0.0/skills/smoke-test`.
 
 The repository is private, so the installer needs GitHub credentials that can read it. The skill becomes available on the next Codex turn after installation.
 
@@ -31,6 +36,14 @@ Open a GitHub pull request, then ask:
 
 The skill requires exactly one matching open GitHub pull request. It reviews and reports only: it does not modify code, create a pull request, approve, request changes, or merge.
 
+## Use smoke-test
+
+Ask:
+
+> Run `$smoke-test` on the affected critical journeys, capture every meaningful checkpoint on desktop and mobile, and publish the evidence to the matching PR if one exists.
+
+The skill does not require a pull request. It runs against the application, reports screenshot-backed observations in the session, and publishes a canonical informational PR comment only when the tested checkout is clean and exactly matches the PR head.
+
 ## Project-specific rules
 
 Keep reusable review principles in the global skill. Each project may extend them with:
@@ -41,18 +54,15 @@ Keep reusable review principles in the global skill. Each project may extend the
 
 Project review definitions extend the global rubrics by default. Replacement must be explicit.
 
+Projects may optionally define smoke-test journeys and runtime instructions under `docs/smoke-test/`. Smoke-test project definitions also extend the global defaults unless replacement is explicit.
+
 ## Repository structure
 
 ```text
 skills/
 ├── pr-review/
-│   ├── SKILL.md
-│   ├── agents/openai.yaml
-│   └── references/
+├── smoke-test/
 └── super-review/
-    ├── SKILL.md
-    ├── agents/openai.yaml
-    └── references/
 ```
 
 Every skill must remain self-contained: its local links and required resources cannot escape its own directory. Add future skills as sibling directories under `skills/`.

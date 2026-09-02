@@ -1,0 +1,4 @@
+interface:
+  display_name: "Smoke Test"
+  short_description: "Prove critical journeys with screenshot evidence"
+  default_prompt: "Use $smoke-test to exercise the affected critical journeys and capture screenshot proof."
