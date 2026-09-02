@@ -19,16 +19,24 @@ State `PASS`, `FAIL`, `BLOCKED`, or `STALE` and summarize the most important obs
 | Server provenance | process receipt or matching build identity |
 | Run at | UTC ISO-8601 |
 | Harness | Playwright, project runner, API client, or other |
+| Test depth | focused, standard, or deep, with reason |
 | Policy sources | explicit request and project files used |
 
-## 3. Journey summary
+## 3. Feature surface
 
-| Journey | Selection reason | Viewports | State | Last checkpoint |
-| --- | --- | --- | --- | --- |
+| Category | Applicability | Affected surface | Challenge coverage |
+| --- | --- | --- | --- |
 
-Use journey states `pass`, `fail`, `blocked`, or `not_applicable`.
+Include every category from `risk-scaled-testing.md`. Give a concrete reason for `not applicable`. Do not mark the overall run `PASS` when an applicable category lacks required coverage for the selected depth.
 
-## 4. Checkpoint evidence
+## 4. Journey and challenge summary
+
+| Case | Type | Surface category | Selection reason or hypothesis | Evidence channels | State |
+| --- | --- | --- | --- | --- | --- |
+
+Use type `journey` or `challenge` and state `pass`, `fail`, `blocked`, or `not_applicable`.
+
+## 5. Checkpoint evidence
 
 For each journey, list checkpoints in execution order:
 
@@ -43,14 +51,20 @@ For each journey, list checkpoints in execution order:
 
 Embed or attach images in the session when the host supports it. Otherwise provide direct artifact paths or authorized links. Include failure evidence at the failed checkpoint.
 
-## 5. Runtime observations
+For a challenge case, also state how the boundary or failure was induced and whether recovery, persistence, and downstream state remained correct.
+
+## 6. Defects found
+
+List every observed mismatch with its case, reproduction evidence, user or system impact, and last known good checkpoint. Use `None.` only when every required case passed.
+
+## 7. Runtime observations
 
 List relevant console exceptions, failed application requests, persisted-state checks, diagnostic retries, and known baseline noise. Use `None.` when empty.
 
-## 6. Limitations and next action
+## 8. Limitations and next action
 
 Identify anything not exercised, evidence that could not be published, environmental constraints, and the smallest next action. Never imply that unselected journeys passed.
 
-## 7. Publication
+## 9. Publication
 
 State whether the canonical pull-request comment was `created`, `updated`, `not_applicable`, `owed`, or withheld because the result was `stale`.

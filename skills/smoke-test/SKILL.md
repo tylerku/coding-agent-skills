@@ -1,11 +1,11 @@
 ---
 name: smoke-test
-description: Exercise the affected critical application journeys against a running test environment, capture screenshot and runtime evidence at each meaningful checkpoint, and optionally publish a standard report to a matching GitHub pull request. Use for smoke testing, UI journey proof, or screenshot-backed release confidence. Do not use as a source-code review or exhaustive acceptance-verification pass.
+description: Run a risk-scaled, adversarial smoke test of the full affected feature surface against a running application, including critical journeys, plausible edge cases, failure paths, and screenshot-backed evidence. Use for feature smoke testing, exploratory runtime validation, UI journey proof, or an attempt to find defects before release. Do not use as a source-code review or an exhaustive whole-product regression suite.
 ---
 
 # Smoke Test
 
-Prove that the affected critical journeys work in a running application. Report observed behavior from the exact code and environment tested; never infer a pass from source code or a green unit-test suite.
+Challenge the full affected feature surface in a running application. Prove the intended journeys work and actively try to falsify the feature with proportionate edge cases and failure conditions. Report observed behavior from the exact code and environment tested; never infer a pass from source code or a green unit-test suite.
 
 ## Operating Contract
 
@@ -15,7 +15,8 @@ Prove that the affected critical journeys work in a running application. Report 
 - Use one journey controller. Do not run browser agents concurrently against shared application state unless the project provides isolated accounts and data for each worker.
 - Perform one bounded pass. A failed assertion may receive one diagnostic retry when the failure could be transient; do not loop, repair the implementation, or silently change the scenario.
 - Screenshots prove rendered state, not behavior by themselves. Pair every checkpoint with an explicit observed assertion and inspect relevant browser-console and network failures.
-- Do not claim exhaustive acceptance coverage. This skill proves the selected smoke journeys; a project acceptance-verification process may require additional criteria and evidence.
+- Scale breadth to the feature's actual surface and risk. A localized reversible UI behavior should stay focused; a provider migration, cross-system workflow, security boundary, communications path, payment path, data migration, webhook, or background-job change requires deeper testing.
+- Do not claim exhaustive whole-product coverage. Cover the affected feature from every applicable angle, while a project acceptance-verification or regression process may still require additional criteria and unrelated journeys.
 
 ## 1. Freeze the Test Target
 
@@ -33,20 +34,33 @@ Apply explicit user instructions first, followed by applicable `AGENTS.md` or `C
 
 If project smoke-test configuration exists, read [references/project-overrides.md](references/project-overrides.md). Project journeys and settings extend the global defaults unless `mode: replace` is explicit. Never load credentials from committed policy files; use the project's authorized secret or test-account mechanism.
 
-## 3. Select the Journeys
+## 3. Map the Feature Surface and Select Depth
+
+Read [references/risk-scaled-testing.md](references/risk-scaled-testing.md). Before choosing cases, map the affected actors, roles, entry points, states, data, integrations, asynchronous paths, legacy behavior, and failure boundaries. Explicitly choose and report one depth:
+
+- `focused`: localized, reversible behavior with a narrow surface and no material external or asynchronous boundary;
+- `standard`: multiple states, layers, roles, persistence paths, or adjacent integrations;
+- `deep`: provider or platform migration, security- or money-sensitive behavior, communications, webhooks, background jobs, data migration, cross-system state, irreversible effects, or broad compatibility risk.
+
+Use the highest depth indicated by any material part of the change. A project may set a minimum depth, and an explicit user instruction may set or raise it. Never silently reduce depth because execution is inconvenient; report unavailable required evidence as `blocked`.
+
+For `focused` depth, select the highest-value distinct challenges required by the focused contract; do not force one case per category. For `standard` and `deep`, identify at least one high-value challenge case for every applicable surface category. At every depth, prioritize realistic boundaries and failure mechanisms over combinatorial variations.
+
+## 4. Select Journeys and Challenge Cases
 
 Read [references/journey-selection.md](references/journey-selection.md). Select:
 
 1. Every explicitly requested journey.
 2. Configured `always` journeys applicable to the environment.
 3. Critical happy paths directly affected by the task or pull-request diff.
-4. The smallest adjacent journey needed to expose a broken integration boundary.
+4. Adjacent journeys needed to expose affected integration, persistence, compatibility, or lifecycle boundaries.
+5. Risk-scaled edge cases and failure paths from the surface map.
 
-Do not expand a smoke pass into the entire regression suite. For each selected journey, state why it was selected, its actor and prerequisites, its start state, its ordered steps, its expected checkpoints, and its applicable viewports.
+Do not expand a smoke pass into unrelated regression coverage. For each selected journey or challenge case, state why it was selected, its actor and prerequisites, its start state, its ordered steps, its expected checkpoints, and its applicable evidence channels and viewports.
 
 If intended behavior is too ambiguous to define an observable checkpoint, mark that journey `blocked`; do not invent the product decision.
 
-## 4. Prepare a Safe Scenario
+## 5. Prepare a Safe Scenario
 
 Use project-provided test accounts and synthetic or disposable data. Create only the minimum prerequisites needed and preserve unrelated developer data. Record material setup so another reviewer can understand the scenario.
 
@@ -59,7 +73,7 @@ For responsive web UI without configured viewports, use:
 
 Apply both viewports to each visual journey unless the product or journey is genuinely single-viewport. Non-visual API or worker journeys use command, response, log, and persisted-state evidence; mark screenshots `not applicable` rather than fabricating them.
 
-## 5. Execute and Capture Evidence
+## 6. Execute and Capture Evidence
 
 Read [references/evidence.md](references/evidence.md) before starting a visual journey.
 
@@ -71,20 +85,22 @@ For every selected journey and applicable viewport:
 4. At the final state, confirm the journey outcome and any material persisted or downstream state that is within authorized reach.
 5. Inspect unexpected browser-console errors and failed application requests. Record only failures relevant to the journey or disclose why they are unrelated.
 
+For non-happy-path challenge cases, establish the boundary or failure condition through an authorized test mechanism, assert both the immediate behavior and recovery behavior, and verify that partial execution did not leave incorrect persisted or downstream state. Use external-provider sandboxes, test modes, fixtures, or supported fault injection; never damage a shared or production environment to manufacture a failure.
+
 Capture a failure screenshot at the point of failure. Preserve actual error text, response status, and the last successful checkpoint without exposing secrets or unnecessary personal data. Continue independent journeys when safe; stop dependent steps whose prerequisites failed.
 
-## 6. Decide the Result
+## 7. Decide the Result
 
 Use these states:
 
-- `pass`: every selected journey passed every required checkpoint and viewport with sufficient evidence.
+- `pass`: every required journey and challenge case for the selected depth passed with sufficient evidence across every applicable surface category.
 - `fail`: at least one expected behavior was observably wrong.
 - `blocked`: required access, environment, test data, product decision, or evidence channel was unavailable.
 - `stale`: the tested commit no longer matches the current pull-request head or declared target.
 
-Do not convert a blocked journey into a pass because other journeys succeeded. Do not treat a relevant console exception or failed application request as harmless without evidence.
+Do not convert a blocked journey or required challenge case into a pass because other cases succeeded. Do not treat a relevant console exception, failed application request, inconsistent persisted state, or recovery failure as harmless without evidence.
 
-## 7. Report and Publish
+## 8. Report and Publish
 
 Always return the complete session report defined in [references/output-contract.md](references/output-contract.md), including direct local artifact paths or available artifact links for every screenshot.
 

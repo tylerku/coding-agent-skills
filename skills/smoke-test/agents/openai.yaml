@@ -1,4 +1,4 @@
 interface:
   display_name: "Smoke Test"
-  short_description: "Prove critical journeys with screenshot evidence"
-  default_prompt: "Use $smoke-test to exercise the affected critical journeys and capture screenshot proof."
+  short_description: "Challenge feature journeys and edge cases"
+  default_prompt: "Use $smoke-test to challenge the full affected feature surface, try to find defects, and capture screenshot-backed evidence."

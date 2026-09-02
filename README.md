@@ -8,7 +8,7 @@ A versioned collection of individually installable coding-agent skills.
 | --- | --- | --- |
 | `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.1.0` |
 | `super-review` | Comprehensive, provider-neutral review of open GitHub pull requests | `super-review-v1.1.0` |
-| `smoke-test` | Runtime journey testing with checkpoint screenshots and optional PR evidence | `smoke-test-v1.0.0` |
+| `smoke-test` | Risk-scaled runtime feature challenges with edge cases and screenshot evidence | `smoke-test-v1.1.0` |
 
 ## Install one skill in Codex
 
@@ -22,7 +22,7 @@ Or install the focused gate:
 
 Or install the runtime journey tester:
 
-> Use `$skill-installer` to install `smoke-test` from `https://github.com/tylerku/coding-agent-skills/tree/smoke-test-v1.0.0/skills/smoke-test`.
+> Use `$skill-installer` to install `smoke-test` from `https://github.com/tylerku/coding-agent-skills/tree/smoke-test-v1.1.0/skills/smoke-test`.
 
 The repository is public, so the installer can download a skill without GitHub repository access. The skill becomes available on the next Codex turn after installation.
 

@@ -1,6 +1,6 @@
 # Journey Selection
 
-A smoke test is a small, high-signal runtime check, not a full end-to-end regression suite. Select journeys that answer: "Could this change ship while a critical affected user path is obviously broken?"
+A smoke test is a high-signal runtime challenge whose breadth scales with the affected feature. Select journeys and edge cases that answer: "How could this feature be wrong even if its obvious happy path appears to work?"
 
 ## Evidence sources
 
@@ -13,15 +13,16 @@ Resolve journeys in this order:
 5. Existing end-to-end tests and product documentation.
 6. Clearly labeled inference from the diff and application structure.
 
-Do not silently promote every acceptance criterion into a smoke journey. Acceptance verification may require exhaustive negative paths, detailed data assertions, performance measurements, or human judgment beyond smoke scope.
+Do not silently promote every unrelated acceptance criterion into a smoke journey. Do include criteria, edge cases, and failure paths that materially exercise the affected feature surface at the selected depth.
 
 ## Default selection rules
 
 - Include a configured `always` journey when its platform and environment are available.
 - Include the changed happy path from entry point to observable outcome.
 - Include authentication or role transition only when it is part of reaching or exercising the changed behavior.
-- Include one adjacent integration boundary when the change could appear successful in the UI while failing to persist or propagate.
-- Include a high-risk negative checkpoint only when its failure would create an immediate security, money, data-loss, or access-control hazard. A comprehensive negative-path audit belongs elsewhere.
+- Include every affected integration boundary needed to catch a false success at the selected depth.
+- Include representative invalid, boundary, repeat, partial-failure, degraded, and recovery cases from the feature surface map.
+- Include security, money, communications, data-loss, privacy, and access-control challenge cases whenever those consequences are plausible.
 - Exclude unrelated product tours and cosmetic states that do not affect the changed journey.
 
 ## Journey contract
@@ -42,6 +43,9 @@ steps:
   - action: Observable user action
     expect: Observable resulting state
     screenshot: short-checkpoint-name
+challenge:
+  category: failure_recovery
+  hypothesis: The state may appear saved after the request fails
 final_evidence:
   - UI, response, persisted row, emitted event, or other proof
 ```

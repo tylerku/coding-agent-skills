@@ -2,6 +2,8 @@
 
 Evidence must let another person understand what was exercised, what appeared after each action, and where the run stopped.
 
+Record the selected depth, feature surface, challenge hypothesis, and evidence channels before execution. A passing screenshot cannot substitute for a required database, provider, webhook, job, or recovery observation.
+
 ## Checkpoints
 
 Capture one screenshot after each meaningful state transition, including:
@@ -31,6 +33,8 @@ Each screenshot entry must include:
 - the artifact path or URL;
 - relevant console or network evidence, if any.
 
+Each edge or failure case must additionally include the surface category, the defect hypothesis it tried to expose, how the condition was established, and the observed recovery or containment behavior.
+
 Prefer assertions on accessible names, visible text, URL, enabled state, persisted state, or API response. A screenshot without an assertion is illustrative, not proof.
 
 ## Data safety
@@ -59,5 +63,7 @@ Record enough context to reproduce the run without exposing credentials:
 - browser and viewport;
 - journey actor role;
 - relevant feature-flag or test-data profile names;
+- selected depth and the reason it was selected;
+- applicable surface categories and challenge-case inventory;
 - runner or test harness;
 - artifact storage location and access classification.
