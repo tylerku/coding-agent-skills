@@ -24,7 +24,7 @@ Or install the runtime journey tester:
 
 > Use `$skill-installer` to install `smoke-test` from `https://github.com/tylerku/coding-agent-skills/tree/smoke-test-v1.0.0/skills/smoke-test`.
 
-The repository is private, so the installer needs GitHub credentials that can read it. The skill becomes available on the next Codex turn after installation.
+The repository is public, so the installer can download a skill without GitHub repository access. The skill becomes available on the next Codex turn after installation.
 
 Each skill lives in a self-contained `skills/<skill-name>/` directory, so teammates can install only the skill they want. The standard installer will not overwrite an existing destination skill directory. Before upgrading, preserve or remove the existing installation deliberately, then install the desired release tag.
 
