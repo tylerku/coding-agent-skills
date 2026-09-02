@@ -9,6 +9,7 @@ The canonical optional project manifest is `docs/code-review/review-policy.yml` 
 - `testing`
 - `architecture`
 - `code_quality`
+- `documentation`
 - `ui_accessibility`
 - `performance_reliability`
 
@@ -24,6 +25,9 @@ reviews:
   code_quality:
     source: docs/code-review/code-quality.md
     mode: extend
+
+  documentation:
+    source: docs/code-review/documentation.md
 
   testing:
     source: docs/code-review/testing.md

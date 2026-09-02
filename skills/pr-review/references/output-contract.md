@@ -22,6 +22,18 @@ Return one structured result:
     "head_ref": "feature-branch",
     "base_ref": "main"
   },
+  "policy_sources": [
+    {
+      "source": "global:references/review-dimensions.md",
+      "mode": "baseline",
+      "dimensions": ["logical_correctness", "security", "architecture_style", "test_coverage", "documentation"]
+    },
+    {
+      "source": "docs/code-review/review-policy.yml -> docs/code-review/architecture.md",
+      "mode": "extend",
+      "dimensions": ["architecture_style"]
+    }
+  ],
   "dimensions": {
     "logical_correctness": { "status": "pass", "summary": "..." },
     "security": { "status": "pass", "summary": "..." },

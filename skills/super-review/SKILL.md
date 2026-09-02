@@ -62,6 +62,7 @@ Always assess applicability for:
 | Test comprehensiveness | [references/testing.md](references/testing.md) |
 | Architecture and compatibility | [references/architecture.md](references/architecture.md) |
 | Code quality and conventions | [references/code-quality.md](references/code-quality.md) |
+| Documentation and operational clarity | [references/documentation.md](references/documentation.md) |
 | UI, UX, and accessibility | [references/ui-accessibility.md](references/ui-accessibility.md) |
 | Performance and reliability | [references/performance-reliability.md](references/performance-reliability.md) |
 
@@ -103,7 +104,7 @@ For every applicable dimension:
 
 The code-quality lane has one `advanced` judgment owner. Feed it a `routine` mechanical prepass for naming, comments, logger usage, explicit convention matching, and citation checks. The prepass supplies evidence and candidate findings; it does not replace the independent code-quality specialist or decide material maintainability issues. Treat invariant, ordering, compatibility, workaround, and safety comments as local contracts unless stronger current requirements supersede them.
 
-Launch one `historical_context` specialist in parallel with the applicable dimension specialists. Read [references/historical-context.md](references/historical-context.md). Its evidence and candidate findings feed the relevant dimensions; it is not an eighth matrix dimension.
+Launch one `historical_context` specialist in parallel with the applicable dimension specialists. Read [references/historical-context.md](references/historical-context.md). Its evidence and candidate findings feed the relevant dimensions; it is not a ninth matrix dimension.
 
 Do not count the primary orchestrator or an implementation agent as an independent specialist.
 
@@ -148,4 +149,4 @@ Read [references/pr-reporting.md](references/pr-reporting.md). Always present th
 
 Immediately before publication, re-fetch the pull request and verify that it remains open and its repository, number, full head SHA, head ref, and base ref still match the frozen target. If any value changed, do not publish the stale result; report `stale` with the reviewed and current values and require a new run.
 
-When freshness is confirmed and publication is authorized, render the exact canonical structure in [references/pr-reporting.md](references/pr-reporting.md) and create or update exactly one informational comment identified by `<!-- super-review-report:v2 -->`. Preserve its heading order, status vocabulary, empty states, finding format, and reviewer-receipt table on every run. If publishing fails, preserve the complete session report and mark publication `owed`; do not change the source-review result.
+When freshness is confirmed and publication is authorized, render the exact canonical structure in [references/pr-reporting.md](references/pr-reporting.md) and create or update exactly one informational comment identified by `<!-- super-review-report:v3 -->`. Preserve its heading order, status vocabulary, empty states, finding format, and reviewer-receipt table on every run. If publishing fails, preserve the complete session report and mark publication `owed`; do not change the source-review result.

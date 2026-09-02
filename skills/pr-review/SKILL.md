@@ -28,13 +28,22 @@ Read the PR description, linked task or issue when available, applicable `AGENTS
 
 Do not invent missing product decisions. A missing decision is `BLOCKED` only when it prevents a responsible merge-safety judgment; otherwise record the limitation and continue.
 
-## 3. Collect focused evidence
+## 3. Resolve project review policy
+
+The portable five-dimension rubric is the fallback baseline. Look for exactly one optional project manifest:
+
+- `docs/code-review/review-policy.yml`
+- `docs/code-review/review-policy.yaml`
+
+When one exists, read [references/project-overrides.md](references/project-overrides.md), load every safely referenced rubric, and extend the baseline by default. Record each effective source and mode in the gate result. A malformed or ambiguous project policy blocks only the affected project-conformance decision; continue every safe baseline check and label it baseline-only.
+
+## 4. Collect focused evidence
 
 Inspect the complete PR diff plus the minimum adjacent code needed to trace changed behavior. Consume current CI results when available. Run focused non-destructive tests, typechecks, static checks, or searches only when they materially resolve a gate decision; do not duplicate an already authoritative passing CI check without reason.
 
 If evidence needed to exclude a critical failure cannot be collected, return `BLOCKED`. Missing optional evidence is a limitation, not automatically a gate failure.
 
-## 4. Review the five dimensions
+## 5. Review the five dimensions
 
 Read [references/review-dimensions.md](references/review-dimensions.md). Evaluate, in this order:
 
@@ -46,7 +55,7 @@ Read [references/review-dimensions.md](references/review-dimensions.md). Evaluat
 
 Every dimension appears in the report as `pass`, `findings`, `not_applicable`, or `blocked`. Documentation may be `not_applicable` with a concrete reason; the other dimensions normally apply to every code change.
 
-## 5. Apply the must-fix bar
+## 6. Apply the must-fix bar
 
 Classify a finding as `must_fix` only when both are true:
 
@@ -57,7 +66,7 @@ Use `warning` for real but non-blocking risk. Do not report optional polish, spe
 
 Deduplicate symptoms into one root-cause finding and give the smallest appropriate fix. Require exact changed-line or directly affected-contract citations.
 
-## 6. Decide, refresh, and report
+## 7. Decide, refresh, and report
 
 Use [references/output-contract.md](references/output-contract.md). Compute the gate:
 

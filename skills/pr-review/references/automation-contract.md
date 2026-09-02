@@ -19,13 +19,15 @@ Configure a GitHub ruleset or branch-protection rule to require that check. A fa
 When comment publication is authorized, create or update one comment owned by the active reviewer identity with this marker as its first line:
 
 ```html
-<!-- pr-review-report:v1 -->
+<!-- pr-review-report:v2 -->
 ```
+
+Search first for the v2 marker. For migration, also search for `<!-- pr-review-report:v1 -->`. Update an owned older comment in place; never edit another author's marked comment or append a new comment on every rerun.
 
 Use this fixed order:
 
 ```markdown
-<!-- pr-review-report:v1 -->
+<!-- pr-review-report:v2 -->
 ## PR Must-Fix Gate
 
 | Gate | Reviewed commit | Reviewed at |
@@ -49,6 +51,10 @@ Use this fixed order:
 | Architecture and style | {{state}} | {{summary}} |
 | Test coverage | {{state}} | {{summary}} |
 | Documentation | {{state}} | {{summary}} |
+
+### Policy sources
+
+{{effective_policy_sources_or_none}}
 
 ### Limitations
 

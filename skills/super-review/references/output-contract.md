@@ -30,6 +30,8 @@ Each specialist returns one structured report with these fields:
 }
 ```
 
+Dimension identifiers are `correctness`, `security`, `testing`, `architecture`, `code_quality`, `documentation`, `ui_accessibility`, and `performance_reliability`.
+
 `status` must be one of:
 
 - `pass`: examined with sufficient evidence and no findings.

@@ -34,6 +34,8 @@ If no eligible configured reviewer is available, mark the role `owed`. Ask befor
 
 Balanced is the default. Economy applies the explicit downgrades in `reviewer-requirements.yml`. Maximum applies its explicit specialist and adjudication upgrades. A profile is a routing policy, not a promise that unavailable models exist.
 
+The documentation role defaults to `routine` capability with `high` reasoning and is launched only when documentation applies. When judging documentation depends on subtle security, payment, migration, concurrency, or distributed-system behavior, route the underlying factual question to the corresponding higher-capability specialist or consolidated adjudicator rather than silently upgrading documentation prose review into system adjudication.
+
 ## Escalation
 
 Apply the `critical_finding_adjudication` role when a finding involves authentication, authorization, payments, secrets, sensitive data, irreversible writes, material data loss, concurrency, distributed state, public contracts, subtle financial/time invariants, or conflicting high-impact conclusions.

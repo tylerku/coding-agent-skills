@@ -15,10 +15,10 @@ Always return the complete review in the active session. Pull-request publicatio
 Use exactly one comment containing this marker as its first line:
 
 ```html
-<!-- super-review-report:v2 -->
+<!-- super-review-report:v3 -->
 ```
 
-Search first for the v2 marker. For migration, also search for `<!-- super-review-report:v1 -->`. Update an existing marked comment only when it is owned by the active reviewer identity; replace an owned v1 comment in place with the v2 structure and marker. Otherwise create one new v2 comment. Never edit another author's marked comment and never append a fresh comment on every rerun.
+Search first for the v3 marker. For migration, also search for `<!-- super-review-report:v2 -->` and `<!-- super-review-report:v1 -->`. Update an existing marked comment only when it is owned by the active reviewer identity; replace an owned older comment in place with the v3 structure and marker. Otherwise create one new v3 comment. Never edit another author's marked comment and never append a fresh comment on every rerun.
 
 ## Fixed rendering contract
 
@@ -36,14 +36,14 @@ Apply these formatting rules on every run:
 - Compute overall state with this precedence: `BLOCKED`, then `OWED`, then `FINDINGS`, then `PASS`.
 - Use the first 12 characters of the reviewed SHA for `short_sha`, while every URL contains the full SHA.
 - Use a UTC timestamp formatted as `YYYY-MM-DDTHH:MM:SSZ`.
-- Keep the seven dimension rows in the displayed order below.
+- Keep the eight dimension rows in the displayed order below.
 - Sort findings by stable finding ID within each severity section.
 - List deterministic checks in execution order and reviewer roles in workflow order.
 - Escape pipe characters and collapse newlines inside table cells so Markdown tables remain valid.
 - Do not add emojis, badges, extra headings, generated-by signatures, or prose outside the template.
 
 ````markdown
-<!-- super-review-report:v2 -->
+<!-- super-review-report:v3 -->
 ## Super Review
 
 | State | Reviewed commit | Base | Profile | Reviewed at |
@@ -61,6 +61,7 @@ Apply these formatting rules on every run:
 | Test comprehensiveness | {{dimension_state}} | {{concise_evidence_based_summary}} |
 | Architecture and compatibility | {{dimension_state}} | {{concise_evidence_based_summary}} |
 | Code quality and conventions | {{dimension_state}} | {{concise_evidence_based_summary}} |
+| Documentation and operational clarity | {{dimension_state}} | {{concise_evidence_based_summary}} |
 | UI, UX, and accessibility | {{dimension_state}} | {{concise_evidence_based_summary}} |
 | Performance and reliability | {{dimension_state}} | {{concise_evidence_based_summary}} |
 
@@ -86,6 +87,7 @@ Apply these formatting rules on every run:
 
 ### Review notes
 
+- **Policy sources:** {{effective_global_repository_project_and_task_sources}}
 - **Historical context:** {{material_history_and_effect_or_none}}
 - **Adjudication:** {{adjudication_state}} — {{concise_result_or_reason}}
 - **Rejected findings:** {{ids_and_short_reasons_or_none}}

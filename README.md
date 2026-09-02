@@ -6,18 +6,18 @@ A versioned collection of individually installable coding-agent skills.
 
 | Skill | Description | Current release |
 | --- | --- | --- |
-| `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.0.0` |
-| `super-review` | Comprehensive, provider-neutral review of open GitHub pull requests | `super-review-v1.0.0` |
+| `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.1.0` |
+| `super-review` | Comprehensive, provider-neutral review of open GitHub pull requests | `super-review-v1.1.0` |
 
 ## Install one skill in Codex
 
 Ask Codex:
 
-> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.0.0/skills/super-review`.
+> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.1.0/skills/super-review`.
 
 Or install the focused gate:
 
-> Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.0.0/skills/pr-review`.
+> Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.1.0/skills/pr-review`.
 
 The repository is private, so the installer needs GitHub credentials that can read it. The skill becomes available on the next Codex turn after installation.
 

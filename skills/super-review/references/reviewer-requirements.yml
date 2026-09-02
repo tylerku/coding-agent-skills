@@ -39,6 +39,10 @@ roles:
     capability_tier: advanced
     reasoning_effort: high
     execution_mode: single_agent
+  documentation:
+    capability_tier: routine
+    reasoning_effort: high
+    execution_mode: single_agent
   ui_accessibility:
     capability_tier: advanced
     reasoning_effort: high
@@ -95,6 +99,8 @@ profiles:
         capability_tier: frontier
       code_quality:
         capability_tier: frontier
+      documentation:
+        capability_tier: advanced
       ui_accessibility:
         capability_tier: frontier
       performance_reliability:
