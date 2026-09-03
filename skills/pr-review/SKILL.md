@@ -12,9 +12,13 @@ Decide whether the exact pull-request SHA contains any concrete issue that must 
 - Review one open GitHub pull request and bind the result to its full head SHA and base SHA.
 - Use exactly one cold independent reviewer. Do not spawn subagents, invoke another review skill, edit code, commit, push, approve, request changes, close, or merge.
 - The surrounding automation owns event triggering and required-check enforcement. Publish a GitHub check or canonical comment only when the invocation explicitly grants that write.
-- Use a minimum `advanced` capability reviewer with `high` reasoning effort. Use `frontier` capability for authentication, authorization, payments, secrets, sensitive data, irreversible writes, material data-loss risk, concurrency, distributed state, or subtle financial/time invariants. If the required capability is unavailable, return `BLOCKED` rather than silently downgrading.
+- Use a minimum `advanced` capability reviewer with `high` reasoning effort. Use `frontier` capability for authentication, authorization, payments, secrets, sensitive data, irreversible writes, material data-loss risk, concurrency, distributed state, or subtle financial/time invariants. Resolve the concrete provider model through [references/reviewer-models.yml](references/reviewer-models.yml). If the required capability is unavailable, return `BLOCKED` rather than silently downgrading.
 - Report only problems introduced or exposed by the PR. Record material legacy debt as a warning only when it directly affects the changed path.
 - A clean gate means no must-fix issue was found in the five focused dimensions. It is not a comprehensive audit or proof of end-to-end behavior.
+
+## Host compatibility
+
+Use the host's native skill, shell, filesystem, and GitHub mechanisms. When running in Claude Code, read [references/claude-code.md](references/claude-code.md) before reviewing. `agents/openai.yaml` is optional Codex interface metadata and is not part of the gate contract.
 
 ## 1. Freeze the pull request
 

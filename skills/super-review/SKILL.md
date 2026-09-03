@@ -19,6 +19,10 @@ Audit a frozen GitHub pull request through parallel specialist reviewers, determ
 - Do not claim perfection. A clean result means every applicable source-review dimension was examined with sufficient code evidence and no unresolved findings remain. It does not prove end-to-end behavior.
 - Do not depend on a smoke-test or acceptance-verification skill. Consume supplied runtime evidence when useful, but complete the source review without it.
 
+## Host Compatibility
+
+Use the host's native skill, delegation, shell, filesystem, image, and GitHub mechanisms. When running in Claude Code, read [references/claude-code.md](references/claude-code.md) before dispatching specialists. `agents/openai.yaml` is optional Codex interface metadata and is not part of the review contract.
+
 ## 1. Require and Freeze the GitHub Pull Request
 
 Resolve exactly one open GitHub pull request from an explicit URL or number, or from the current repository, head ref, and expected base. Never select by title similarity alone. Confirm the remote repository identity and record the full head SHA before collecting evidence or launching reviewers.

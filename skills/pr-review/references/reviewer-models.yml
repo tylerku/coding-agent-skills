@@ -1,0 +1,48 @@
+version: 1
+
+metadata:
+  verified_on: "2026-08-31"
+  sources:
+    openai: https://developers.openai.com/api/docs/guides/latest-model
+    anthropic: https://platform.claude.com/docs/en/models/overview
+    xai: https://docs.x.ai/developers/model-capabilities/text/reasoning
+
+providers:
+  openai:
+    preferred_runner: codex
+    capability_tiers:
+      advanced:
+        model: gpt-5.6-terra
+      frontier:
+        model: gpt-5.6-sol
+    reasoning_effort_map:
+      high: high
+
+  anthropic:
+    preferred_runner: claude_code
+    capability_tiers:
+      advanced:
+        model: claude-sonnet-5
+      frontier:
+        model: claude-fable-5
+        alternatives:
+          - claude-opus-5
+    reasoning_effort_map:
+      high: high
+    notes:
+      - Treat a model substitution as a routing event and verify the actual model before accepting the gate receipt.
+
+  xai:
+    preferred_runner: grok_build
+    capability_tiers:
+      advanced:
+        model: grok-4.6
+      frontier:
+        model: grok-4.6
+    reasoning_effort_map:
+      high: high
+
+fallback_policy:
+  allow_same_or_higher_capability: true
+  allow_lower_capability: false
+  require_disclosure: true

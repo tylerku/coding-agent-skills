@@ -18,6 +18,10 @@ Challenge the full affected feature surface in a running application. Prove the 
 - Scale breadth to the feature's actual surface and risk. A localized reversible UI behavior should stay focused; a provider migration, cross-system workflow, security boundary, communications path, payment path, data migration, webhook, or background-job change requires deeper testing.
 - Do not claim exhaustive whole-product coverage. Cover the affected feature from every applicable angle, while a project acceptance-verification or regression process may still require additional criteria and unrelated journeys.
 
+## Host Compatibility
+
+Use the host's native skill, shell, filesystem, browser, image, and GitHub mechanisms. When running in Claude Code, read [references/claude-code.md](references/claude-code.md) before preparing the scenario. `agents/openai.yaml` is optional Codex interface metadata and is not part of the test contract.
+
 ## 1. Freeze the Test Target
 
 Record the repository, full commit SHA, branch, worktree state, environment, base URL, test-data source, and matching pull request when one exists. Inspect staged, unstaged, and untracked changes before testing.

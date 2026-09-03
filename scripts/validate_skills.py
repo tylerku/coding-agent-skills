@@ -52,6 +52,41 @@ def validate_entrypoint(skill: Path) -> None:
         fail(f"{entrypoint.relative_to(ROOT)} requires a non-empty description")
 
 
+def validate_claude_adapter(skill: Path, agent_names: set[str]) -> None:
+    adapter = skill / "references" / "claude-code.md"
+    if not adapter.is_file():
+        fail(f"{skill.relative_to(ROOT)} requires references/claude-code.md")
+
+    agents_root = skill / "integrations" / "claude-code" / "agents"
+    if not agents_root.exists():
+        return
+
+    for path in sorted(agents_root.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        match = FRONTMATTER.match(text)
+        if not match:
+            fail(f"{path.relative_to(ROOT)} must start with YAML frontmatter")
+        metadata = yaml.safe_load(match.group(1))
+        if not isinstance(metadata, dict):
+            fail(f"{path.relative_to(ROOT)} frontmatter must be a mapping")
+        name = metadata.get("name")
+        if not isinstance(name, str) or not name.strip():
+            fail(f"{path.relative_to(ROOT)} requires a non-empty name")
+        if name in agent_names:
+            fail(f"duplicate Claude agent name: {name}")
+        agent_names.add(name)
+        if not isinstance(metadata.get("description"), str) or not metadata["description"].strip():
+            fail(f"{path.relative_to(ROOT)} requires a non-empty description")
+        if not isinstance(metadata.get("model"), str) or not metadata["model"].strip():
+            fail(f"{path.relative_to(ROOT)} requires an explicit model")
+        if metadata.get("effort") not in {"low", "medium", "high", "xhigh", "max"}:
+            fail(f"{path.relative_to(ROOT)} requires a supported effort")
+        denied = metadata.get("disallowedTools", "")
+        denied_values = denied if isinstance(denied, list) else denied.split(",")
+        if "Agent" not in {str(value).strip() for value in denied_values}:
+            fail(f"{path.relative_to(ROOT)} must disallow nested Agent use")
+
+
 def validate_yaml_files(skill: Path) -> None:
     yaml_paths = sorted(skill.rglob("*.yml")) + sorted(skill.rglob("*.yaml"))
     for path in yaml_paths:
@@ -87,8 +122,10 @@ def validate_no_scaffolding(skill: Path) -> None:
 
 def main() -> None:
     skills = discover_skills()
+    agent_names: set[str] = set()
     for skill in skills:
         validate_entrypoint(skill)
+        validate_claude_adapter(skill, agent_names)
         validate_yaml_files(skill)
         validate_local_links(skill)
         validate_no_scaffolding(skill)
