@@ -47,3 +47,22 @@ Each review entry requires `source`. `mode` is optional and defaults to `extend`
 - When a source is invalid, still perform the safe portable baseline and label the affected result baseline-only rather than silently claiming project-policy conformance.
 
 Record every effective global, repository-instruction, project-policy, and task-specific source in `policy_sources`.
+
+## Reviewer mappings
+
+A project may provide `docs/code-review/reviewers.yml` to extend or override concrete provider mappings using the schema concepts in the skill's `reviewer-models.yml`. Explicit user choices and cost ceilings still take precedence, and unmapped models never acquire a capability tier by inference.
+
+Fable 5 is never an automatic focused-gate route. Selecting it from project policy requires both an explicit Fable model mapping and `allow_premium_fable: true` on the Anthropic provider entry. A mapping without that premium-cost acknowledgement is invalid; use the shipped Sonnet or Opus route instead.
+
+```yaml
+version: 1
+
+providers:
+  anthropic:
+    allow_premium_fable: true
+    capability_tiers:
+      frontier:
+        model: claude-fable-5
+```
+
+Record the mapping source, actual provider/model, capability tier, and effort in the gate receipt.

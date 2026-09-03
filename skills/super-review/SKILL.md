@@ -1,23 +1,25 @@
 ---
 name: super-review
-description: Run a comprehensive, evidence-backed, provider-neutral review of an open GitHub pull request across every applicable source-code quality dimension, then publish a standard review-state comment. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use without a matching GitHub PR, for an ordinary narrow review, or as a substitute for product smoke testing.
+description: Run a comprehensive, evidence-backed, provider-neutral review of an open GitHub pull request, repair clear accepted findings when authorized, verify the resulting head, and publish a standard review-state comment. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use without a matching GitHub PR, for an ordinary narrow review, or as a substitute for product smoke testing.
 ---
 
-# Comprehensive Code Review
+# Comprehensive Code Review and Remediation
 
-Audit a frozen GitHub pull request through parallel specialist reviewers, deterministic code evidence, historical context, consolidated finding adjudication, and a final completeness matrix. Keep reviewer roles independent of AI provider and never present source review as proof that a running product works.
+Audit a frozen GitHub pull request through parallel specialist reviewers, deterministic code evidence, historical context, consolidated finding adjudication, bounded remediation of clear findings, and a final completeness matrix. Keep reviewer roles independent of AI provider and never present source review as proof that a running product works.
 
 ## Operating Contract
 
-- Review source and report results only. Do not edit code, commit, push, create a pull request, submit an approving or changes-requested review, or mutate unrelated state.
+- An explicitly requested super review authorizes one bounded repair wave on the matching pull-request branch for accepted blockers and warnings whose smallest correct fix is clear and decision-free, unless the user requests report-only behavior. Use an isolated checkout when practical, preserve unrelated work, and ask immediately before mutation when the host or repository requires separate confirmation.
+- Do not create a pull request, force-push, rebase, merge, deploy, submit an approving or changes-requested review, repair unrelated debt, or mutate production data or external systems.
 - A matching open GitHub pull request is mandatory. Draft pull requests are eligible unless the user or project policy excludes them. If exactly one matching pull request cannot be resolved, stop before dispatch and report `blocked`; never create a pull request to satisfy this requirement.
 - An explicitly requested super-review includes permission to update one canonical informational comment on a matching existing pull request unless the user opts out. If the skill was activated without a clear request or the host requires separate approval, obtain authorization immediately before posting.
-- Freeze the target before dispatch: GitHub repository, pull-request number and URL, full head SHA, head ref, base ref, task intent, acceptance criteria, changed files, affected systems, out-of-scope boundaries, and non-test LOC when practical.
+- Freeze the target before dispatch: base GitHub repository, pull-request number and URL, authoritative head repository owner/name, full head SHA, head ref, base ref, task intent, acceptance criteria, changed files, affected systems, out-of-scope boundaries, and non-test LOC when practical.
 - Review the current change, not the entire backlog. Record important adjacent problems as follow-ups only when evidence makes them material.
 - Treat severity and confidence as separate fields. A severe hypothesis with weak evidence is not a confirmed blocker.
 - A builder self-check is supplemental. It never satisfies an independent specialist lane.
 - Do not claim perfection. A clean result means every applicable source-review dimension was examined with sufficient code evidence and no unresolved findings remain. It does not prove end-to-end behavior.
 - Do not depend on a smoke-test or acceptance-verification skill. Consume supplied runtime evidence when useful, but complete the source review without it.
+- A fixed finding is not complete until the repair is committed, pushed to the PR head, and verified against the resulting full SHA. Never describe a suggestion, local edit, or unverified attempt as fixed.
 
 ## Host Compatibility
 
@@ -25,7 +27,7 @@ Use the host's native skill, delegation, shell, filesystem, image, and GitHub me
 
 ## 1. Require and Freeze the GitHub Pull Request
 
-Resolve exactly one open GitHub pull request from an explicit URL or number, or from the current repository, head ref, and expected base. Never select by title similarity alone. Confirm the remote repository identity and record the full head SHA before collecting evidence or launching reviewers.
+Resolve exactly one open GitHub pull request from an explicit URL or number, or from the current repository, head ref, and expected base. Never select by title similarity alone. Confirm the base repository identity, authoritative head repository owner/name, head ref, and full head SHA before collecting evidence or launching reviewers. Treat a fork head as a distinct push target even when its branch name also exists in the base repository.
 
 If no matching open pull request exists, more than one match remains, the repository identity is uncertain, or the pull-request diff cannot be read, report `blocked` and stop. Do not install or authenticate GitHub tooling without authorization.
 
@@ -128,29 +130,39 @@ The adjudicator must attempt to disprove each finding by checking:
 
 Classify each finding as `accepted`, `rejected`, `follow_up`, or `escalated`. Preserve a brief reason and the adjudicator's updated confidence. The primary orchestrator may verify citations and resolve duplicates, but it must not silently overturn a material adjudication; disclose any unresolved disagreement.
 
-## 8. Synthesize
+## 8. Repair Clear Accepted Findings
+
+Read [references/remediation.md](references/remediation.md). Classify every accepted blocker and warning as `auto_fix`, `decision_required`, or `repair_owed`. Improvements are report-only unless the user explicitly requests them.
+
+Repair all `auto_fix` findings in one coordinated implementation wave. Do not let parallel agents edit the same worktree. Before pushing, run the authoritative focused checks, confirm the original PR head repository, ref, and SHA are unchanged, and use a normal non-force push to that exact head repository and ref. If any target identity or SHA changed, stop and report `stale`; never overwrite another contributor's update.
+
+After a successful push, freeze the resulting head SHA. Re-run deterministic checks and independent specialist review for every dimension that had an accepted finding or is materially affected by the repair diff. Carry an earlier passing lane forward only when its reviewed scope is unchanged, and record that basis. If a repair introduces or exposes another accepted finding, leave it open after this one bounded repair wave rather than looping.
+
+Set each accepted finding to `fixed`, `open`, `decision_required`, or `repair_owed`. Preserve its original finding ID and first-seen SHA. A repair is `fixed` only when verification passes on the pushed final SHA.
+
+## 9. Synthesize
 
 The primary orchestrator verifies accepted findings against the repository, deduplicates them by underlying defect, resolves cross-dimension conflicts, and reports:
 
 1. Review target and contract.
 2. Deterministic commands and observed results.
-3. Dimension matrix: `pass`, `findings`, `not_applicable`, `owed`, or `blocked`.
-4. Accepted blockers, warnings, and improvements.
+3. Dimension matrix: `pass`, `pass_after_fixes`, `findings`, `decision_required`, `not_applicable`, `owed`, or `blocked`.
+4. Accepted findings grouped by resolution state, including first-seen and fixed SHAs.
 5. Rejected and follow-up findings with short reasons.
 6. Historical evidence and whether it changed any conclusion.
 7. Provider, model, runner, capability tier, reasoning effort, and fallback used per role.
 8. Rubric sources used per dimension.
 9. Runtime limitations and other remaining uncertainty.
-10. Pull-request publication state and the smallest next action.
+10. Initial and final reviewed SHAs, repair commit and checks, pull-request publication state, and the smallest next action.
 
-Compute each final matrix status after finding adjudication. Use this precedence: `blocked`, then `owed`, then `findings`, then `pass`; `not_applicable` is used only when the lane truly does not apply. A `blocked` or `owed` lane may still list accepted findings. If every proposed finding is rejected and evidence is otherwise sufficient, the final lane becomes `pass`.
+Compute each final matrix status after repair verification. Use this precedence: `blocked`, then `owed`, then `decision_required`, then `findings`, then `pass_after_fixes`, then `pass`; `not_applicable` is used only when the lane truly does not apply. A `blocked` or `owed` lane may still list accepted findings. Use `pass_after_fixes` only when every accepted finding in that lane was verified fixed on the final SHA. If every proposed finding is rejected and evidence is otherwise sufficient, the final lane becomes `pass`.
 
 Do not report the audit as clean when any applicable source-review dimension is `owed` or `blocked`, or when any accepted finding remains unresolved. Do not launch redundant reviewers merely to obtain nicer wording.
 
-## 9. Publish Existing Pull-Request State
+## 10. Publish Existing Pull-Request State
 
 Read [references/pr-reporting.md](references/pr-reporting.md). Always present the complete report in the session.
 
-Immediately before publication, re-fetch the pull request and verify that it remains open and its repository, number, full head SHA, head ref, and base ref still match the frozen target. If any value changed, do not publish the stale result; report `stale` with the reviewed and current values and require a new run.
+Immediately before publication, re-fetch the pull request and verify that it remains open and its base repository, number, authoritative head repository, full final head SHA, head ref, and base ref still match the frozen final target. If any value changed, do not publish the stale result; report `stale` with the reviewed and current values and require a new run.
 
-When freshness is confirmed and publication is authorized, render the exact canonical structure in [references/pr-reporting.md](references/pr-reporting.md) and create or update exactly one informational comment identified by `<!-- super-review-report:v3 -->`. Preserve its heading order, status vocabulary, empty states, finding format, and reviewer-receipt table on every run. If publishing fails, preserve the complete session report and mark publication `owed`; do not change the source-review result.
+When freshness is confirmed and publication is authorized, render the exact canonical structure in [references/pr-reporting.md](references/pr-reporting.md) and create or update exactly one informational comment identified by `<!-- super-review-report:v4 -->`. Preserve its heading order, status vocabulary, empty states, finding history, repair receipt, and reviewer-receipt table on every run. If publishing fails, preserve the complete session report and mark publication `owed`; do not change the source-review result.

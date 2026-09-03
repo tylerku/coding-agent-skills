@@ -8,19 +8,19 @@ The workflow definitions follow the shared Agent Skills `SKILL.md` format and in
 
 | Skill | Description | Current release |
 | --- | --- | --- |
-| `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.0` |
-| `super-review` | Comprehensive, provider-neutral review of open GitHub pull requests | `super-review-v1.2.0` |
+| `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.1` |
+| `super-review` | Comprehensive, provider-neutral review and repair of open GitHub pull requests | `super-review-v1.3.0` |
 | `smoke-test` | Risk-scaled runtime feature challenges with edge cases and screenshot evidence | `smoke-test-v1.3.0` |
 
 ## Install one skill in Codex
 
 Ask Codex:
 
-> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.2.0/skills/super-review`.
+> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.3.0/skills/super-review`.
 
 Or install the focused gate:
 
-> Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.2.0/skills/pr-review`.
+> Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.2.1/skills/pr-review`.
 
 Or install the runtime journey tester:
 
@@ -33,12 +33,12 @@ The repository is public, so the installer can download a skill without GitHub r
 Claude Code discovers personal skills under `~/.claude/skills/` and invokes them with slash commands. Check out the release you want, then use the repository installer so only the selected skill is copied:
 
 ```bash
-git clone --depth 1 --branch super-review-v1.2.0 https://github.com/tylerku/coding-agent-skills.git
+git clone --depth 1 --branch super-review-v1.3.0 https://github.com/tylerku/coding-agent-skills.git
 cd coding-agent-skills
 python3 scripts/install_skill.py super-review --host claude
 ```
 
-Replace the tag and skill name with `pr-review-v1.2.0` / `pr-review` or `smoke-test-v1.3.0` / `smoke-test` as needed. The installer refuses to overwrite an existing skill or bundled Claude agent definition. Before upgrading, preserve or remove the old skill directory and any associated definitions under `~/.claude/agents/coding-agent-skills/`. Claude Code detects additions inside existing personal skills and agents directories live. Restart Claude Code when either top-level directory did not exist when the session started.
+Replace the tag and skill name with `pr-review-v1.2.1` / `pr-review` or `smoke-test-v1.3.0` / `smoke-test` as needed. The installer refuses to overwrite an existing skill or bundled Claude agent definition. Before upgrading, preserve or remove the old skill directory and any associated definitions under `~/.claude/agents/coding-agent-skills/`. Claude Code detects additions inside existing personal skills and agents directories live. Restart Claude Code when either top-level directory did not exist when the session started.
 
 The same installer can install a checked-out release into Codex with `--host codex`, or both personal skill directories with `--host both`. When a skill bundles Claude Code subagents, the installer places those definitions under `~/.claude/agents/coding-agent-skills/` and refuses to overwrite an existing definition.
 
@@ -60,7 +60,7 @@ In Claude Code, invoke the same workflow with:
 
 > `/super-review PR #123 using the Balanced profile`
 
-The skill requires exactly one matching open GitHub pull request. It reviews and reports only: it does not modify code, create a pull request, approve, request changes, or merge.
+The skill requires exactly one matching open GitHub pull request. By default, an explicit run repairs clear accepted blockers and warnings in one bounded wave, verifies and pushes the repair to the unchanged PR head, and reports fixed versus unresolved findings. It does not create a pull request, force-push, approve, request changes, deploy, or merge. Ask for `report-only` behavior when no source changes are wanted.
 
 ## Use pr-review
 

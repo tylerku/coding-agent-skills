@@ -30,6 +30,8 @@ Never silently:
 
 If no eligible configured reviewer is available, mark the role `owed`. Ask before crossing a ceiling. Record every actual runner, provider, model, native effort, and fallback in the final report.
 
+Fable 5 is a premium Anthropic route. Use the shipped Fable mapping only for a role whose resolved `reasoning_effort` is `maximum`, or when the user explicitly requests Fable. A project may opt a non-maximum role into Fable only by setting `allow_premium_fable: true` on its Anthropic provider entry in `docs/code-review/reviewers.yml`; merely mapping Fable to a capability tier is not sufficient. Apply this authorization test to initial selection, fallbacks, and host substitutions. Record which authorization applied. Without one, resolve ordinary frontier-high work to Opus or mark it `owed` if no eligible Opus mapping is available.
+
 ## Profiles
 
 Balanced is the default. Economy applies the explicit downgrades in `reviewer-requirements.yml`. Maximum applies its explicit specialist and adjudication upgrades. A profile is a routing policy, not a promise that unavailable models exist.

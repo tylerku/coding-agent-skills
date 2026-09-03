@@ -1,10 +1,11 @@
 version: 1
 
 metadata:
-  verified_on: "2026-08-31"
+  verified_on: "2026-09-03"
   sources:
     openai: https://developers.openai.com/api/docs/guides/latest-model
     anthropic: https://platform.claude.com/docs/en/models/overview
+    anthropic_pricing: https://platform.claude.com/docs/en/about-claude/pricing
     xai: https://docs.x.ai/developers/model-capabilities/text/reasoning
 
 providers:
@@ -24,13 +25,16 @@ providers:
       advanced:
         model: claude-sonnet-5
       frontier:
-        model: claude-fable-5
+        model: claude-opus-5
         alternatives:
-          - claude-opus-5
+          - claude-opus-4-8
     reasoning_effort_map:
       high: high
     notes:
       - Treat a model substitution as a routing event and verify the actual model before accepting the gate receipt.
+      - Opus is the default high-risk frontier reviewer.
+      - Use Fable only when the user explicitly requests it or project policy both maps it and sets allow_premium_fable to true.
+      - Apply the premium authorization rule to host substitutions and fallbacks as well as initial selection.
 
   xai:
     preferred_runner: grok_build

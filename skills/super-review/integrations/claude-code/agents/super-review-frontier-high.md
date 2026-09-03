@@ -3,7 +3,7 @@ name: super-review-frontier-high
 description: Read-only frontier-capability specialist for a Super Review lane
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 disallowedTools: Agent, Skill, Write, Edit, NotebookEdit
-model: claude-fable-5
+model: claude-opus-5
 effort: high
 ---
 

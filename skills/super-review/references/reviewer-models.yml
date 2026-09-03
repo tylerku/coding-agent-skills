@@ -1,10 +1,11 @@
 version: 1
 
 metadata:
-  verified_on: "2026-08-31"
+  verified_on: "2026-09-03"
   sources:
     openai: https://developers.openai.com/api/docs/guides/latest-model
     anthropic: https://platform.claude.com/docs/en/models/overview
+    anthropic_pricing: https://platform.claude.com/docs/en/about-claude/pricing
     xai: https://docs.x.ai/developers/model-capabilities/text/reasoning
 
 providers:
@@ -31,9 +32,16 @@ providers:
       advanced:
         model: claude-sonnet-5
       frontier:
-        model: claude-fable-5
+        model: claude-opus-5
         alternatives:
-          - claude-opus-5
+          - claude-opus-4-8
+    maximum_effort_override:
+      capability_tier: frontier
+      model: claude-fable-5
+      applies_when:
+        - The resolved role requires maximum reasoning effort.
+        - The user explicitly requests Fable 5.
+        - Project policy maps Fable 5 and sets allow_premium_fable to true.
     reasoning_effort_map:
       low: low
       medium: medium
@@ -42,6 +50,9 @@ providers:
     notes:
       - The runner must translate normalized effort using capabilities supported by the selected Claude model.
       - When a selected model cannot represent the requested effort, use a configured same-or-higher-capability model or mark the role owed.
+      - Do not use Fable for a high-effort frontier role; Opus is the default frontier model.
+      - Fable is a premium route reserved for maximum-effort roles, an explicit user request, or an explicit project premium opt-in.
+      - Apply the premium authorization rule to host substitutions and fallbacks as well as initial selection.
 
   xai:
     preferred_runner: grok_build
