@@ -102,8 +102,8 @@ Do not convert a blocked journey or required challenge case into a pass because 
 
 ## 8. Report and Publish
 
-Always return the complete session report defined in [references/output-contract.md](references/output-contract.md), including direct local artifact paths or available artifact links for every screenshot.
+Build the report once using [references/report-contract.md](references/report-contract.md). Render that same canonical report in the session, including every screenshot as an inline image or attachment when the host supports it and a direct artifact path or link for every checkpoint. Do not independently resummarize the run for different destinations.
 
-If a matching open pull request exists, the tested checkout was clean at its exact head SHA, and publication is authorized, read [references/pr-reporting.md](references/pr-reporting.md). Upload screenshots only through the project's authorized artifact mechanism. Never commit proof images merely to make them visible on a pull request, and never upload sensitive screenshots to a public location.
+If a matching open pull request exists, the tested checkout was clean at its exact head SHA, and publication is authorized, read [references/pr-publication.md](references/pr-publication.md). Render the same canonical report data and section order in the pull-request comment. Upload screenshots only through the project's authorized artifact mechanism. Never commit proof images merely to make them visible on a pull request, and never upload sensitive screenshots to a public location.
 
 Immediately before publishing, re-fetch the pull request and compare its full head SHA with the frozen target. If it changed, do not publish stale evidence. Report `stale` and require a new run.
