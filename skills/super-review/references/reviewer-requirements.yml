@@ -44,7 +44,7 @@ roles:
     reasoning_effort: high
     execution_mode: single_agent
   ui_accessibility:
-    capability_tier: advanced
+    capability_tier: frontier
     reasoning_effort: high
     execution_mode: single_agent
   performance_reliability:
@@ -101,8 +101,6 @@ profiles:
         capability_tier: frontier
       documentation:
         capability_tier: advanced
-      ui_accessibility:
-        capability_tier: frontier
       performance_reliability:
         capability_tier: frontier
       historical_context:

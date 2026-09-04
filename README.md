@@ -9,14 +9,14 @@ The workflow definitions follow the shared Agent Skills `SKILL.md` format and in
 | Skill | Description | Current release |
 | --- | --- | --- |
 | `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.1` |
-| `super-review` | Comprehensive, provider-neutral review and repair of open GitHub pull requests | `super-review-v1.3.0` |
+| `super-review` | Comprehensive, provider-neutral review and repair of open GitHub pull requests | `super-review-v1.3.1` |
 | `smoke-test` | Risk-scaled runtime feature challenges with edge cases and screenshot evidence | `smoke-test-v1.3.0` |
 
 ## Install one skill in Codex
 
 Ask Codex:
 
-> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.3.0/skills/super-review`.
+> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.3.1/skills/super-review`.
 
 Or install the focused gate:
 
@@ -33,7 +33,7 @@ The repository is public, so the installer can download a skill without GitHub r
 Claude Code discovers personal skills under `~/.claude/skills/` and invokes them with slash commands. Check out the release you want, then use the repository installer so only the selected skill is copied:
 
 ```bash
-git clone --depth 1 --branch super-review-v1.3.0 https://github.com/tylerku/coding-agent-skills.git
+git clone --depth 1 --branch super-review-v1.3.1 https://github.com/tylerku/coding-agent-skills.git
 cd coding-agent-skills
 python3 scripts/install_skill.py super-review --host claude
 ```
