@@ -4,7 +4,7 @@ Use this procedure when intended behavior or acceptance criteria are not already
 
 ## Required fields
 
-- **Target:** the required open GitHub pull request, including base repository, number, URL, authoritative head repository owner/name, full head SHA, head ref, and base ref.
+- **Target:** the required resolved or safely bootstrapped open GitHub pull request, including base repository, number, URL, authoritative head repository owner/name, full head SHA, head ref, and base ref.
 - **Intent:** the observable outcome the change is supposed to create.
 - **Acceptance criteria:** independently checkable behavior statements.
 - **Out of scope:** explicit boundaries and deliberately deferred work.
@@ -35,6 +35,6 @@ The rest of the quality audit may proceed even when behavioral acceptance is blo
 
 ## Target evidence
 
-Establish the reviewed change from exactly one matching open GitHub pull request and its authoritative diff. Record the base repository, pull-request number and URL, authoritative head repository owner/name, full head SHA, head ref, base ref, and changed-file list. A path named in a request is scope, not proof that every file beneath it changed.
+Establish the reviewed change from exactly one matching open GitHub pull request and its authoritative diff. The pull request may have existed before the run or been safely created under `pr-target.md`; no specialist work begins before it exists and is verified. Record the base repository, pull-request number and URL, authoritative head repository owner/name, full head SHA, head ref, base ref, and changed-file list. A path named in a request is scope, not proof that every file beneath it changed.
 
-If the pull request or its diff cannot be established unambiguously, mark the review `blocked`, request a GitHub PR URL or number, and stop before specialist dispatch. Never fall back to local changes, a branch-only diff, a supplied patch, or an inferred whole-tree scope for this skill.
+If the pull request or its diff cannot be established unambiguously after eligible bootstrap, mark the review `blocked`, report the missing prerequisite, and stop before specialist dispatch. Never fall back to local changes, a branch-only diff, a supplied patch, or an inferred whole-tree scope for this skill.

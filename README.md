@@ -9,14 +9,14 @@ The workflow definitions follow the shared Agent Skills `SKILL.md` format and in
 | Skill | Description | Current release |
 | --- | --- | --- |
 | `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.1` |
-| `super-review` | Comprehensive, provider-neutral review and repair of open GitHub pull requests | `super-review-v1.3.1` |
+| `super-review` | Comprehensive, provider-neutral review and repair of GitHub pull requests | `super-review-v1.4.0` |
 | `smoke-test` | Risk-scaled runtime feature challenges with edge cases and screenshot evidence | `smoke-test-v1.3.0` |
 
 ## Install one skill in Codex
 
 Ask Codex:
 
-> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.3.1/skills/super-review`.
+> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.4.0/skills/super-review`.
 
 Or install the focused gate:
 
@@ -33,7 +33,7 @@ The repository is public, so the installer can download a skill without GitHub r
 Claude Code discovers personal skills under `~/.claude/skills/` and invokes them with slash commands. Check out the release you want, then use the repository installer so only the selected skill is copied:
 
 ```bash
-git clone --depth 1 --branch super-review-v1.3.1 https://github.com/tylerku/coding-agent-skills.git
+git clone --depth 1 --branch super-review-v1.4.0 https://github.com/tylerku/coding-agent-skills.git
 cd coding-agent-skills
 python3 scripts/install_skill.py super-review --host claude
 ```
@@ -52,7 +52,7 @@ Each skill lives in a self-contained `skills/<skill-name>/` directory, so teamma
 
 ## Use super-review
 
-Open a GitHub pull request, then ask:
+From an existing pull request or a clean, committed feature branch, ask:
 
 > Run `$super-review` on PR #123 using the Balanced profile.
 
@@ -60,7 +60,7 @@ In Claude Code, invoke the same workflow with:
 
 > `/super-review PR #123 using the Balanced profile`
 
-The skill requires exactly one matching open GitHub pull request. By default, an explicit run repairs clear accepted blockers and warnings in one bounded wave, verifies and pushes the repair to the unchanged PR head, and reports fixed versus unresolved findings. It does not create a pull request, force-push, approve, request changes, deploy, or merge. Ask for `report-only` behavior when no source changes are wanted.
+The skill requires exactly one matching open GitHub pull request before specialist review. When none exists, an explicit run may normally push an already committed, clean, unambiguous feature branch and create one draft PR; unsafe or ambiguous setups stop without mutation. It then repairs clear accepted blockers and warnings in one bounded wave, verifies and pushes the repair to the unchanged PR head, and reports fixed versus unresolved findings. It never creates a branch or non-draft PR, commits dirty work, force-pushes, approves, requests changes, deploys, or merges. Ask for `report-only` behavior when no review-triggered source changes are wanted, and explicitly opt out when no PR should be created.
 
 ## Use pr-review
 

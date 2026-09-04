@@ -1,6 +1,6 @@
 ---
 name: super-review
-description: Run a comprehensive, evidence-backed, provider-neutral review of an open GitHub pull request, repair clear accepted findings when authorized, verify the resulting head, and publish a standard review-state comment. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use without a matching GitHub PR, for an ordinary narrow review, or as a substitute for product smoke testing.
+description: Resolve or safely create a draft GitHub pull request, run a comprehensive provider-neutral code review, repair clear accepted findings when authorized, verify the resulting head, and publish standard review state. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use for an ordinary narrow review or as a substitute for product smoke testing.
 ---
 
 # Comprehensive Code Review and Remediation
@@ -10,8 +10,9 @@ Audit a frozen GitHub pull request through parallel specialist reviewers, determ
 ## Operating Contract
 
 - An explicitly requested super review authorizes one bounded repair wave on the matching pull-request branch for accepted blockers and warnings whose smallest correct fix is clear and decision-free, unless the user requests report-only behavior. Use an isolated checkout when practical, preserve unrelated work, and ask immediately before mutation when the host or repository requires separate confirmation.
-- Do not create a pull request, force-push, rebase, merge, deploy, submit an approving or changes-requested review, repair unrelated debt, or mutate production data or external systems.
-- A matching open GitHub pull request is mandatory. Draft pull requests are eligible unless the user or project policy excludes them. If exactly one matching pull request cannot be resolved, stop before dispatch and report `blocked`; never create a pull request to satisfy this requirement.
+- An explicit super-review request authorizes one normal push of already committed feature-branch state and one draft pull-request creation when no matching PR exists and every condition in [references/pr-target.md](references/pr-target.md) is satisfied. It never authorizes committing dirty work or choosing among ambiguous repositories, branches, or bases. If invocation was implicit or the host requires separate confirmation, ask immediately before either write.
+- Do not create a branch or non-draft pull request, force-push, rebase, merge, deploy, submit an approving or changes-requested review, repair unrelated debt, or mutate production data or external systems.
+- Exactly one matching open GitHub pull request is mandatory before specialist dispatch. It may be pre-existing or safely bootstrapped as a draft. Draft pull requests are eligible unless the user or project policy excludes them. If a unique target cannot be resolved or safely created, stop before dispatch and report `blocked`.
 - An explicitly requested super-review includes permission to update one canonical informational comment on a matching existing pull request unless the user opts out. If the skill was activated without a clear request or the host requires separate approval, obtain authorization immediately before posting.
 - Freeze the target before dispatch: base GitHub repository, pull-request number and URL, authoritative head repository owner/name, full head SHA, head ref, base ref, task intent, acceptance criteria, changed files, affected systems, out-of-scope boundaries, and non-test LOC when practical.
 - Review the current change, not the entire backlog. Record important adjacent problems as follow-ups only when evidence makes them material.
@@ -25,11 +26,13 @@ Audit a frozen GitHub pull request through parallel specialist reviewers, determ
 
 Use the host's native skill, delegation, shell, filesystem, image, and GitHub mechanisms. When running in Claude Code, read [references/claude-code.md](references/claude-code.md) before dispatching specialists. `agents/openai.yaml` is optional Codex interface metadata and is not part of the review contract.
 
-## 1. Require and Freeze the GitHub Pull Request
+## 1. Resolve or Create and Freeze the GitHub Pull Request
 
-Resolve exactly one open GitHub pull request from an explicit URL or number, or from the current repository, head ref, and expected base. Never select by title similarity alone. Confirm the base repository identity, authoritative head repository owner/name, head ref, and full head SHA before collecting evidence or launching reviewers. Treat a fork head as a distinct push target even when its branch name also exists in the base repository.
+Establish the expected base ref before PR discovery using this precedence: explicit user direction, applicable repository instructions, existing authoritative branch metadata, then an unambiguous repository default. If sources conflict or none establishes a safe base, report `blocked`; do not use an existing PR to silently choose the contract.
 
-If no matching open pull request exists, more than one match remains, the repository identity is uncertain, or the pull-request diff cannot be read, report `blocked` and stop. Do not install or authenticate GitHub tooling without authorization.
+Then resolve exactly one open GitHub pull request from an explicit URL or number, or from the current repository and authoritative head ref. Never select by title similarity alone. If the user named a PR URL or number that is missing, closed, or otherwise ineligible, report `blocked`; do not substitute a newly created PR. Require every existing candidate's base to match the established expected base. A different-base PR is a target conflict: report it and stop rather than reviewing the wrong diff or creating a second PR automatically. When the request targets the current change without naming an unresolved PR and no open PR exists for that head, read [references/pr-target.md](references/pr-target.md) and bootstrap one draft PR only when its full safety contract passes.
+
+After resolving or creating the PR, confirm the base repository identity, authoritative head repository owner/name, head ref, and full head SHA before collecting evidence or launching reviewers. Treat a fork head as a distinct push target even when its branch name also exists in the base repository. If more than one match remains, target identity is uncertain, safe bootstrap is unavailable, or the authoritative diff cannot be read, report `blocked` and stop. Do not install or authenticate GitHub tooling without authorization.
 
 ## 2. Build the Review Contract
 

@@ -5,9 +5,9 @@ Always return the complete review in the active session. Pull-request publicatio
 ## Discovery and authorization
 
 - Resolve exactly one matching open GitHub pull request from the frozen base repository, authoritative head repository owner/name, head ref or commit, and expected base. Never review or post to a title match or a merely similar branch.
-- A matching GitHub pull request is a prerequisite for the review, not merely an optional reporting destination. Draft pull requests remain eligible unless project policy says otherwise.
-- Never create a branch or pull request merely to obtain a reporting destination. Repairs may push only through the bounded remediation contract.
-- An explicitly requested super-review authorizes the bounded repair wave and updating the canonical informational comment unless the user opts out. If invocation was implicit, repository ownership is unclear, or the host requires confirmation, ask immediately before either write.
+- A matching GitHub pull request is a prerequisite for specialist dispatch, not merely an optional reporting destination. It may be pre-existing or safely created as a draft through `pr-target.md`. Draft pull requests remain eligible unless project policy says otherwise.
+- Never create a branch or non-draft pull request. Before review, pushes and draft creation are allowed only through the target-bootstrap contract; after review, repairs may push only through the bounded remediation contract.
+- An explicitly requested super-review authorizes eligible target bootstrap, the bounded repair wave, and updating the canonical informational comment unless the user opts out. If invocation was implicit, repository ownership is unclear, or the host requires confirmation, ask immediately before a write.
 - Honor project instructions and code-host permissions. Do not install a CLI or authenticate a new account without authorization.
 
 ## Canonical comment
