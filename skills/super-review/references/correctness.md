@@ -13,6 +13,7 @@ Review whether the change behaves correctly across every affected path, not only
 - Check compatibility with existing callers, stored data, APIs, events, jobs, caches, feature flags, and configuration.
 - Verify cache invalidation and consistency of derived or duplicated state.
 - Confirm unchanged behavior remains unchanged outside the requested scope.
+- When the change introduces an invariant that existing code must respect, such as a shared resource, a new state, or a new ownership rule, inventory every existing path that reads or writes the affected entities or external resources. Classify each as safe, guarded (cite the guard), or needing a fix. Do not sample a few callers; an uninventoried path is the most likely source of the next regression.
 
 ## Evidence standard
 
