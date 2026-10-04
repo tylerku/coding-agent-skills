@@ -20,13 +20,25 @@ Examples that normally require a decision include competing rollout strategies, 
 
 1. Confirm the PR remains open at the frozen initial head. Record the authoritative head repository owner/name as well as the head ref, and confirm that exact target is writable without force.
 2. Prefer a clean isolated worktree or detached checkout at that exact SHA. Never mix repairs with unrelated local changes.
-3. Implement all `auto_fix` findings in one coordinated wave, including focused tests and documentation required by those fixes.
+3. Implement all `auto_fix` findings in one coordinated wave, including focused tests and documentation required by those fixes, following the repair discipline below.
 4. Run the smallest authoritative focused checks for each repair, followed by broader checks required by the repository or affected surface.
 5. If verification fails, allow one bounded diagnostic correction inside the same wave. If it still fails, mark the finding `open` or `repair_owed` and do not push a knowingly failing repair.
 6. Re-fetch the PR head immediately before push. Push one ordinary commit to the exact head repository and head ref only when it still equals the initial SHA. For a fork PR, never mistake a same-named branch in the base repository for the contributor's head branch. Never force-push or overwrite an intervening update.
 7. Confirm the PR head now equals the pushed repair commit, freeze it as the final SHA, and perform post-repair specialist verification.
 
 When isolation is unavailable, use the existing checkout only if it is clean, exactly matches the PR head, and contains no unrelated user work. Record the chosen repair workspace and push target.
+
+## Repair discipline
+
+A repair that only patches the reported instance tends to move the defect rather than remove it. Before and during the repair wave:
+
+- **Map the blast radius first.** Before editing, list every caller of the function, query, or rule being changed, and every other entry point that enforces the same invariant. Record the list in the repair receipt.
+- **Fix the class, not the instance.** When a finding is one path missing a guard or applying a rule inconsistently, check every path of the same shape. Repair each one inside the PR's scope, or record it as a follow-up. Do not fix only the path a reviewer happened to name.
+- **Prefer one enforcement point.** When an invariant spans many callers, enforce it at a single choke point the callers cannot bypass, such as a guarded adapter, an owning service method, or a database constraint. Add per-caller guards only where no shared choke point exists, and say so.
+- **Check both sides of every changed condition.** For each predicate the repair adds, narrows, or widens, state what it now admits and what it now rejects. Confirm that neither side opens a new failure, such as a guard that stops one wrong action but also blocks a legitimate one.
+- **Test the real flow.** Build test fixtures from the order of operations the code actually runs, not from the state the repair assumes. Each repair needs at least one assertion that fails if the repair is reverted. A test that pins a state production never reaches does not verify the repair.
+- **Document after verifying.** Update documentation only after the repair's tests and any runtime evidence show the behavior it describes. Do not describe intended behavior as fact.
+- **Review the repair diff before pushing.** Read the complete repair diff as a reviewer would, looking for newly introduced duplication, layering violations, stray edits, and conditions that conflict with existing definitions of the same rule.
 
 ## Verification and lifecycle
 
