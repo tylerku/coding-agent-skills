@@ -3,7 +3,7 @@ name: super-review-advanced-high
 description: Read-only advanced-capability specialist for a Super Review lane
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 disallowedTools: Agent, Skill, Write, Edit, NotebookEdit
-model: claude-sonnet-5
+model: claude-sonnet-5-5
 effort: high
 ---
 

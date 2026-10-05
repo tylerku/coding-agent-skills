@@ -1,9 +1,9 @@
 ---
 name: super-review-frontier-maximum
-description: Read-only critical Super Review specialist; compatibility alias for Opus 5 at high effort
+description: Read-only critical Super Review specialist; compatibility alias for Opus 5.5 at high effort
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 disallowedTools: Agent, Skill, Write, Edit, NotebookEdit
-model: claude-opus-5
+model: claude-opus-5-5
 effort: high
 ---
 

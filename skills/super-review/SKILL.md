@@ -2,7 +2,7 @@
 name: super-review
 description: Resolve or safely create a draft GitHub pull request, run a comprehensive provider-neutral code review, repair clear accepted findings when authorized, verify the resulting head, and publish standard review state. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use for an ordinary narrow review or as a substitute for product smoke testing.
 metadata:
-  version: "1.5.0"
+  version: "1.6.0"
 ---
 
 # Comprehensive Code Review and Remediation

@@ -3,7 +3,7 @@ name: super-review-routine-high
 description: Read-only routine-capability specialist for a Super Review lane
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch
 disallowedTools: Agent, Skill, Write, Edit, NotebookEdit
-model: claude-haiku-4-5
+model: claude-sonnet-5-5
 effort: high
 ---
 

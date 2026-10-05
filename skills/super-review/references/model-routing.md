@@ -30,7 +30,7 @@ Never silently:
 
 If no eligible configured reviewer is available, mark the role `owed`. Ask before crossing a ceiling. Record every actual runner, provider, model, native effort, and fallback in the final report.
 
-The configured user preference disables Fable for Anthropic reviews and caps their effective reasoning effort at `high`. Apply `blocked_models` and `reasoning_effort_ceiling` from `reviewer-models.yml` after resolving role/profile requirements and before selecting the model or agent. This explicit user ceiling also applies to critical adjudication, the Maximum profile, project overrides, fallbacks, and host substitutions. Resolve frontier work to Opus 5 at high effort (or the configured Opus 4.8 alternative), never to Fable or native max effort. Do not treat earlier one-off Fable requests as overriding this saved preference; changing the preference requires a new explicit user instruction. Record the requested and effective efforts in the receipt.
+The configured user preference disables Fable for Anthropic reviews and caps their effective reasoning effort at `high`. Apply `blocked_models` and `reasoning_effort_ceiling` from `reviewer-models.yml` after resolving role/profile requirements and before selecting the model or agent. This explicit user ceiling also applies to critical adjudication, the Maximum profile, project overrides, fallbacks, and host substitutions. Resolve frontier work to Opus 5.5 at high effort (or the configured Opus 5 alternative), never to Fable or native max effort. Do not treat earlier one-off Fable requests as overriding this saved preference; changing the preference requires a new explicit user instruction. Record the requested and effective efforts in the receipt.
 
 ## Profiles
 
@@ -56,22 +56,22 @@ For a Claude review using the Balanced profile, resolve each role to the followi
 
 | Role | Claude model | Native effort | Claude Code agent |
 | --- | --- | --- | --- |
-| `correctness` | `claude-opus-5` | `high` | `super-review-frontier-high` |
-| `security` | `claude-opus-5` | `high` | `super-review-frontier-high` |
-| `architecture` | `claude-opus-5` | `high` | `super-review-frontier-high` |
-| `ui_accessibility` | `claude-opus-5` | `high` | `super-review-frontier-high` |
-| `testing` | `claude-sonnet-5` | `high` | `super-review-advanced-high` |
-| `code_quality` | `claude-sonnet-5` | `high` | `super-review-advanced-high` |
-| `performance_reliability` | `claude-sonnet-5` | `high` | `super-review-advanced-high` |
-| `historical_context` | `claude-sonnet-5` | `high` | `super-review-advanced-high` |
-| `finding_adjudication` | `claude-sonnet-5` | `high` | `super-review-advanced-high` |
-| `documentation` | `claude-haiku-4-5` | `high` | `super-review-routine-high` |
-| `code_quality_mechanical_prepass` | `claude-haiku-4-5` | `high` | `super-review-routine-high` |
-| `contract_extraction` | `claude-haiku-4-5` | `high` | `super-review-routine-high` |
-| `rule_discovery` | `claude-haiku-4-5` | `high` | `super-review-routine-high` |
-| `citation_validation` | `claude-haiku-4-5` | `high` | `super-review-routine-high` |
-| `critical_finding_adjudication` | `claude-opus-5` | `high` | `super-review-frontier-high` |
-| `synthesis` | `claude-opus-5` | `high` | Orchestrator; do not spawn another reviewer |
+| `correctness` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
+| `security` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
+| `architecture` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
+| `ui_accessibility` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
+| `testing` | `claude-sonnet-5-5` | `high` | `super-review-advanced-high` |
+| `code_quality` | `claude-sonnet-5-5` | `high` | `super-review-advanced-high` |
+| `performance_reliability` | `claude-sonnet-5-5` | `high` | `super-review-advanced-high` |
+| `historical_context` | `claude-sonnet-5-5` | `high` | `super-review-advanced-high` |
+| `finding_adjudication` | `claude-sonnet-5-5` | `high` | `super-review-advanced-high` |
+| `documentation` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
+| `code_quality_mechanical_prepass` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
+| `contract_extraction` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
+| `rule_discovery` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
+| `citation_validation` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
+| `critical_finding_adjudication` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
+| `synthesis` | `claude-opus-5-5` | `high` | Orchestrator; do not spawn another reviewer |
 
 Balanced and Maximum give each specialist an independent invocation even when several roles use the same agent definition. Economy gives each compatible group one invocation using the agent that satisfies the strongest assigned role. Contract extraction, rule discovery, and citation validation are helper assignments when delegated, not additional mandatory reviewers. Use one separate adjudicator: ordinary or critical, as determined below.
 
