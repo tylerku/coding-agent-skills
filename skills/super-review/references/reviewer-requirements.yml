@@ -82,15 +82,18 @@ roles:
 
 profiles:
   economy:
-    role_overrides:
-      correctness:
-        capability_tier: advanced
+    # Same role requirements as Balanced; savings come from grouped invocations.
+    role_overrides: {}
+    reviewer_groups:
+      behavior:
+        roles: [correctness, testing]
+      structure:
+        roles: [architecture, code_quality, documentation]
+        helper_roles: [historical_context, code_quality_mechanical_prepass]
+      product:
+        roles: [ui_accessibility, performance_reliability]
       security:
-        capability_tier: advanced
-      architecture:
-        capability_tier: advanced
-      synthesis:
-        capability_tier: advanced
+        roles: [security]
   balanced:
     role_overrides: {}
   maximum:

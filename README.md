@@ -9,14 +9,14 @@ The workflow definitions follow the shared Agent Skills `SKILL.md` format and in
 | Skill | Description | Current release |
 | --- | --- | --- |
 | `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.1` |
-| `super-review` | Comprehensive, provider-neutral review and repair of GitHub pull requests | `super-review-v1.4.0` |
+| `super-review` | Comprehensive, provider-neutral review and repair of GitHub pull requests | `super-review-v1.5.0` |
 | `smoke-test` | Risk-scaled runtime feature challenges with edge cases and screenshot evidence | `smoke-test-v1.3.0` |
 
 ## Install one skill in Codex
 
 Ask Codex:
 
-> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.4.0/skills/super-review`.
+> Use `$skill-installer` to install `super-review` from `https://github.com/tylerku/coding-agent-skills/tree/super-review-v1.5.0/skills/super-review`.
 
 Or install the focused gate:
 
@@ -33,7 +33,7 @@ The repository is public, so the installer can download a skill without GitHub r
 Claude Code discovers personal skills under `~/.claude/skills/` and invokes them with slash commands. Check out the release you want, then use the repository installer so only the selected skill is copied:
 
 ```bash
-git clone --depth 1 --branch super-review-v1.4.0 https://github.com/tylerku/coding-agent-skills.git
+git clone --depth 1 --branch super-review-v1.5.0 https://github.com/tylerku/coding-agent-skills.git
 cd coding-agent-skills
 python3 scripts/install_skill.py super-review --host claude
 ```
@@ -54,11 +54,13 @@ Each skill lives in a self-contained `skills/<skill-name>/` directory, so teamma
 
 From an existing pull request or a clean, committed feature branch, ask:
 
-> Run `$super-review` on PR #123 using the Balanced profile.
+> Run `$super-review` on PR #123.
 
 In Claude Code, invoke the same workflow with:
 
-> `/super-review PR #123 using the Balanced profile`
+> `/super-review PR #123`
+
+Economy is the default: it groups related review angles into normally at most four initial reviewers while retaining Balanced model capability and reasoning requirements. Each group uses the strongest requirements among its applicable roles. History and mechanical checks share those groups, every dimension still gets its own result, and a separate adjudicator runs only when material findings require validation. Explicit role-specific model or independence constraints may require extra invocations. Request `using the Balanced profile` for separate dimension specialists, or `using the Maximum profile` for the strongest configured review requirements.
 
 The skill requires exactly one matching open GitHub pull request before specialist review. When none exists, an explicit run may normally push an already committed, clean, unambiguous feature branch and create one draft PR; unsafe or ambiguous setups stop without mutation. It then repairs clear accepted blockers and warnings in one bounded wave, verifies and pushes the repair to the unchanged PR head, and reports fixed versus unresolved findings. It never creates a branch or non-draft PR, commits dirty work, force-pushes, approves, requests changes, deploys, or merges. Ask for `report-only` behavior when no review-triggered source changes are wanted, and explicitly opt out when no PR should be created.
 

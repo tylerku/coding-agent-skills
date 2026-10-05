@@ -39,7 +39,7 @@ Apply these formatting rules on every run:
 - Use a UTC timestamp formatted as `YYYY-MM-DDTHH:MM:SSZ`.
 - Keep the eight dimension rows in the displayed order below.
 - Group accepted findings by resolution state and sort by stable finding ID within each group.
-- List deterministic checks in execution order and reviewer roles in workflow order.
+- List deterministic checks in execution order and reviewer roles in workflow order. In the existing Role cell, include the invocation identifier (for example, `architecture [initial:structure]`) so shared invocations and fresh verification runs are visible without adding table columns. Every role retains its actual routing receipt; shared roles are not separate independent reviewers.
 - Escape pipe characters and collapse newlines inside table cells so Markdown tables remain valid.
 - Do not add emojis, badges, extra headings, generated-by signatures, or prose outside the template.
 

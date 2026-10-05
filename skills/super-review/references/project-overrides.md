@@ -62,23 +62,21 @@ Record the effective sources and mode in the final matrix.
 
 A project may provide `docs/code-review/reviewers.yml` to extend or override concrete provider mappings. Use the schema concepts in the skill's `reviewer-models.yml`.
 
-Example Anthropic override with an explicit premium-cost acknowledgement:
+Example Anthropic override selecting the configured frontier alternative:
 
 ```yaml
 version: 1
 
 providers:
   anthropic:
-    allow_premium_fable: true
     capability_tiers:
       frontier:
-        model: claude-fable-5
+        model: claude-opus-4-8
 ```
 
 - Project provider entries extend shipped providers by default.
 - A project may replace one provider entry with `mode: replace` when its parser or wrapper supports that envelope.
-- Explicit user choices and cost ceilings still take precedence.
-- For a non-maximum role, a project may select Fable 5 only when its Anthropic entry contains `allow_premium_fable: true`. A Fable model mapping without that flag is invalid. Maximum-effort roles may use the shipped premium route without a project opt-in.
+- Explicit user choices and cost ceilings still take precedence. The saved Anthropic configuration disables Fable and caps effort at high; project mappings, premium opt-ins, and provider replacement cannot bypass those user restrictions.
 - Reject unknown capability tiers, reasoning efforts, unsafe file references, and unmapped runner/provider combinations.
 - Never infer that an unlisted model satisfies a capability tier. Add the mapping or mark the role `owed`.
 - Record both the mapping source and actual resolved reviewer in the final report.

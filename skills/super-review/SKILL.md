@@ -1,6 +1,8 @@
 ---
 name: super-review
 description: Resolve or safely create a draft GitHub pull request, run a comprehensive provider-neutral code review, repair clear accepted findings when authorized, verify the resulting head, and publish standard review state. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use for an ordinary narrow review or as a substitute for product smoke testing.
+metadata:
+  version: "1.5.0"
 ---
 
 # Comprehensive Code Review and Remediation
@@ -92,7 +94,7 @@ Do not run a comprehensive product journey or create proof screenshots as part o
 
 ## 6. Resolve Reviewers and Dispatch Independent Specialists
 
-Read [references/model-routing.md](references/model-routing.md), [references/reviewer-requirements.yml](references/reviewer-requirements.yml), and [references/reviewer-models.yml](references/reviewer-models.yml) before dispatch. Preserve any explicit user provider, model, profile, or cost ceiling. Otherwise use the Balanced profile.
+Read [references/model-routing.md](references/model-routing.md), [references/reviewer-requirements.yml](references/reviewer-requirements.yml), and [references/reviewer-models.yml](references/reviewer-models.yml) before dispatch. Preserve any explicit user provider, model, profile, or cost ceiling. Otherwise use the Economy profile.
 
 Roles specify `capability_tier` and normalized `reasoning_effort`; provider adapters map those requirements to concrete models and native effort values. Apply this precedence:
 
@@ -103,23 +105,23 @@ Roles specify `capability_tier` and normalized `reasoning_effort`; provider adap
 
 Never invent a model-to-tier classification during a run, silently downgrade capability, or cross a cost ceiling. When no eligible reviewer exists, mark the lane `owed`.
 
-For every applicable dimension:
+Use one independent specialist per applicable dimension in Balanced and Maximum. In Economy, use the compatible reviewer groups in [references/model-routing.md](references/model-routing.md#economy-dispatch), retaining Balanced capability and reasoning requirements. For each specialist or group:
 
-1. Launch an independent, report-only specialist through the host's supported delegation mechanism. Prefer a cold context that does not inherit the builder's rationale.
-2. Provide only the frozen review contract, exact review target, relevant changed and adjacent files, effective dimension rubric, project instructions, and collected evidence.
+1. Launch an independent, report-only reviewer through the host's supported delegation mechanism. Prefer a cold context that does not inherit the builder's rationale. In Economy, use fresh group contexts without previous review conclusions; angles within a group share context and are not independent of one another.
+2. Provide only the frozen review contract, exact review target, relevant changed and adjacent files, effective rubrics for all assigned roles, project instructions, and collected factual evidence.
 3. Tell the specialist not to modify files, invoke nested reviewers, or expand scope.
-4. Require the structure in [references/output-contract.md](references/output-contract.md).
+4. Require the structure in [references/output-contract.md](references/output-contract.md), with a separate result for every assigned dimension even when one invocation covers several roles.
 5. Run independent specialists concurrently when slots permit; use waves rather than weakening coverage when they do not.
 
-The code-quality lane has one `advanced` judgment owner. Feed it a `routine` mechanical prepass for naming, comments, logger usage, explicit convention matching, and citation checks. The prepass supplies evidence and candidate findings; it does not replace the independent code-quality specialist or decide material maintainability issues. Treat invariant, ordering, compatibility, workaround, and safety comments as local contracts unless stronger current requirements supersede them.
+The code-quality lane has one judgment owner meeting at least its configured `advanced` requirement. Feed it a mechanical prepass meeting its configured `routine` requirement (performed within the structure group in Economy) for naming, comments, logger usage, explicit convention matching, and citation checks. The prepass supplies evidence and candidate findings; it does not replace the independent code-quality specialist or decide material maintainability issues. Treat invariant, ordering, compatibility, workaround, and safety comments as local contracts unless stronger current requirements supersede them.
 
-Launch one `historical_context` specialist in parallel with the applicable dimension specialists. Read [references/historical-context.md](references/historical-context.md). Its evidence and candidate findings feed the relevant dimensions; it is not a ninth matrix dimension.
+Read [references/historical-context.md](references/historical-context.md). In Balanced and Maximum, launch one `historical_context` specialist in parallel with the applicable dimension specialists. In Economy, assign this work to the structure group without another invocation. Its evidence and candidate findings feed the relevant dimensions; it is not a ninth matrix dimension.
 
 Do not count the primary orchestrator or an implementation agent as an independent specialist.
 
 ## 7. Adjudicate Material Findings Once
 
-After the parallel specialists finish, collect all proposed `blocker` and material `warning` findings into one deduplicated packet. If the packet is non-empty, launch one independent `finding_adjudication` reviewer. Use the critical adjudication role for high-risk findings or conflicting specialist conclusions. Do not launch one validator per finding and do not run a separate cold backstop panel.
+After the parallel specialists finish, collect all proposed `blocker` and material `warning` findings into one deduplicated packet. Also include any `improvement` that alleges a violation of a mandatory project architecture rule, so a severity downgrade cannot bypass adjudication. If the packet is non-empty, launch one independent `finding_adjudication` reviewer. Use the critical adjudication role for high-risk findings or conflicting specialist conclusions. Do not launch one validator per finding and do not run a separate cold backstop panel.
 
 The adjudicator must attempt to disprove each finding by checking:
 
@@ -129,9 +131,10 @@ The adjudicator must attempt to disprove each finding by checking:
 - reachability and realistic triggering conditions;
 - existing tests or deterministic evidence;
 - the cited project or universal rule;
+- whether an alleged mandatory architecture-rule violation was incorrectly labeled optional, and whether any claimed exception actually covers the code;
 - whether the proposed fix belongs inside scope.
 
-Classify each finding as `accepted`, `rejected`, `follow_up`, or `escalated`. Preserve a brief reason and the adjudicator's updated confidence. The primary orchestrator may verify citations and resolve duplicates, but it must not silently overturn a material adjudication; disclose any unresolved disagreement.
+Classify each finding as `accepted`, `rejected`, `follow_up`, or `escalated`. Preserve a brief reason, the adjudicator's updated confidence, and any severity correction. Apply the architecture rubric's minimum `warning` severity to confirmed in-scope mandatory layer violations; optional improvements remain report-only. The primary orchestrator may verify citations and resolve duplicates, but it must not silently overturn a material adjudication; disclose any unresolved disagreement.
 
 ## 8. Repair Clear Accepted Findings
 
@@ -139,7 +142,7 @@ Read [references/remediation.md](references/remediation.md). Classify every acce
 
 Repair all `auto_fix` findings in one coordinated implementation wave. Do not let parallel agents edit the same worktree. Before pushing, run the authoritative focused checks, confirm the original PR head repository, ref, and SHA are unchanged, and use a normal non-force push to that exact head repository and ref. If any target identity or SHA changed, stop and report `stale`; never overwrite another contributor's update.
 
-After a successful push, freeze the resulting head SHA. Re-run deterministic checks and independent specialist review for every dimension that had an accepted finding or is materially affected by the repair diff. Carry an earlier passing lane forward only when its reviewed scope is unchanged, and record that basis. If a repair introduces or exposes another accepted finding, leave it open after this one bounded repair wave rather than looping.
+After a successful push, freeze the resulting head SHA. Re-run deterministic checks and independent specialist review for every dimension that had an accepted finding or is materially affected by the repair diff, using the selected profile's dispatch policy. In Economy, use fresh verification contexts and group only the dimensions requiring verification. Carry an earlier passing lane forward only when its reviewed scope is unchanged, and record that basis. If a repair introduces or exposes another accepted finding, leave it open after this one bounded repair wave rather than looping.
 
 Set each accepted finding to `fixed`, `open`, `decision_required`, or `repair_owed`. Preserve its original finding ID and first-seen SHA. A repair is `fixed` only when verification passes on the pushed final SHA.
 
@@ -153,7 +156,7 @@ The primary orchestrator verifies accepted findings against the repository, dedu
 4. Accepted findings grouped by resolution state, including first-seen and fixed SHAs.
 5. Rejected and follow-up findings with short reasons.
 6. Historical evidence and whether it changed any conclusion.
-7. Provider, model, runner, capability tier, reasoning effort, and fallback used per role.
+7. Provider, model, runner, capability tier, reasoning effort, and fallback used per role, identifying roles that shared an invocation.
 8. Rubric sources used per dimension.
 9. Runtime limitations and other remaining uncertainty.
 10. Initial and final reviewed SHAs, repair commit and checks, pull-request publication state, and the smallest next action.

@@ -1,6 +1,6 @@
 # Historical Context Review
 
-Run this cross-cutting specialist in parallel with the applicable quality-dimension specialists. It supplies evidence and candidate findings to those dimensions; it does not create an additional final matrix dimension.
+In Balanced and Maximum, run this cross-cutting specialist in parallel with the applicable quality-dimension specialists. In Economy, the structure reviewer performs this work in its existing invocation. It supplies separately identified evidence and candidate findings to the dimensions; it does not create an additional final matrix dimension.
 
 ## Examine
 

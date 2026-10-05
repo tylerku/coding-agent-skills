@@ -1,6 +1,6 @@
 # Specialist Output Contract
 
-Each specialist returns one structured report with these fields:
+Return one structured report per assigned dimension with these fields. A grouped reviewer returns a `reports` array of these objects, plus separate helper evidence when assigned; never substitute one group-level pass for the dimension results:
 
 ```json
 {
@@ -8,6 +8,7 @@ Each specialist returns one structured report with these fields:
   "status": "pass",
   "reviewer": {
     "role": "architecture",
+    "invocation": "initial:architecture",
     "runner": "codex",
     "provider": "openai",
     "model": "gpt-5.6-sol",
@@ -31,6 +32,8 @@ Each specialist returns one structured report with these fields:
 ```
 
 Dimension identifiers are `correctness`, `security`, `testing`, `architecture`, `code_quality`, `documentation`, `ui_accessibility`, and `performance_reliability`.
+
+`reviewer.role` identifies the dimension role; `reviewer.invocation` identifies the actual agent invocation, such as `initial:structure` or `verification:structure`. Reports from one grouped invocation share that identifier and actual routing receipt. Historical-context and mechanical-prepass helper evidence includes the helper role, invocation, routing, sources, candidate findings, and limitations, without adding a quality-matrix dimension. Do not imply one invocation supplied multiple independent reviewers.
 
 `status` must be one of:
 
@@ -74,7 +77,7 @@ Specialists propose findings only. They do not decide whether the orchestrator m
 
 Do not use `fixed` until the repair is pushed and verified on the PR's final SHA. Preserve the original finding ID and first-seen SHA even when the original line no longer exists.
 
-Use `blocker` only when the current change cannot safely land. Use `warning` for a real, material quality problem that may be consciously accepted. Use `improvement` for worthwhile non-blocking refinement. Do not encode importance in confidence.
+Use `blocker` only when the current change cannot safely land. Use `warning` for a real, material quality problem that may be consciously accepted. Use `improvement` for worthwhile non-blocking refinement. Do not encode importance in confidence. For mandatory project layer rules, apply the classification requirements in [architecture.md](architecture.md#project-boundary-conformance): a verified in-scope violation is at least `warning`, unless an explicit applicable exception or superseding instruction establishes conformance. Repair cost or approval needs do not make the violation an optional improvement.
 
 ## Confidence anchors
 
