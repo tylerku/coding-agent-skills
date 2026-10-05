@@ -75,7 +75,7 @@ For a Claude review using the Balanced profile, resolve each role to the followi
 
 Balanced and Maximum give each specialist an independent invocation even when several roles use the same agent definition. Economy gives each compatible group one invocation using the agent that satisfies the strongest assigned role. Contract extraction, rule discovery, and citation validation are helper assignments when delegated, not additional mandatory reviewers. Use one separate adjudicator: ordinary or critical, as determined below.
 
-Explicit current user choices and project overrides retain the resolution precedence above. Economy retains the Balanced role requirements and resolves grouped routing; Maximum recalculates its role requirements. Both apply the Anthropic high-effort ceiling before dispatch. `claude-opus-4-8` remains the configured frontier alternative; disclose a fallback when used. Claude CLI invocations must pass the resolved model and native effort explicitly, matching the model and effort bindings of the corresponding Claude Code agent.
+Explicit current user choices and project overrides retain the resolution precedence above. Economy retains the Balanced role requirements and resolves grouped routing; Maximum recalculates its role requirements. Both apply the Anthropic high-effort ceiling before dispatch. `claude-opus-5` remains the configured frontier alternative; disclose a fallback when used. Claude CLI invocations must pass the resolved model and native effort explicitly, matching the model and effort bindings of the corresponding Claude Code agent.
 
 ## Escalation
 
