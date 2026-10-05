@@ -1,7 +1,7 @@
 version: 1
 
 metadata:
-  verified_on: "2026-09-03"
+  verified_on: "2026-10-04"
   sources:
     openai: https://developers.openai.com/api/docs/guides/latest-model
     anthropic: https://platform.claude.com/docs/en/models/overview
@@ -28,13 +28,13 @@ providers:
     preferred_runner: claude_code
     capability_tiers:
       routine:
-        model: claude-haiku-4-5
+        model: claude-sonnet-5-5
       advanced:
-        model: claude-sonnet-5
+        model: claude-sonnet-5-5
       frontier:
-        model: claude-opus-5
+        model: claude-opus-5-5
         alternatives:
-          - claude-opus-4-8
+          - claude-opus-5
     blocked_models:
       - claude-fable-5
     reasoning_effort_ceiling: high
@@ -47,7 +47,8 @@ providers:
       - User preference caps all Anthropic review work at high effort, including critical adjudication and the Maximum profile.
       - Apply the effort ceiling before selecting an agent; maximum requirements resolve to high under this explicit user override.
       - Fable is disabled for initial selection, project overrides, fallbacks, and host substitutions.
-      - Use Opus 5 for critical adjudication; Opus 4.8 remains the configured frontier alternative.
+      - Use Opus 5.5 for critical adjudication; Opus 5 remains the configured frontier alternative.
+      - Routine and advanced roles both resolve to Sonnet 5.5.
       - Record the requested effort, effective high-effort ceiling, and actual model in the reviewer receipt.
 
   xai:
