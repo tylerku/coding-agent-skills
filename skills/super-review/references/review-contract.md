@@ -6,7 +6,8 @@ Use this procedure when intended behavior or acceptance criteria are not already
 
 - **Target:** the required resolved or safely bootstrapped open GitHub pull request, including base repository, number, URL, authoritative head repository owner/name, full head SHA, head ref, and base ref.
 - **Intent:** the observable outcome the change is supposed to create.
-- **Acceptance criteria:** independently checkable behavior statements.
+- **Acceptance criteria:** independently checkable behavior statements that come from an owner decision or another authoritative source.
+- **Builder choices:** implementation details the builder, an agent, or an agent-written plan chose without owner approval, such as new columns, fields, methods, exports, configuration, and plan specifics. They are not acceptance criteria.
 - **Out of scope:** explicit boundaries and deliberately deferred work.
 - **Affected surfaces:** components, APIs, data, jobs, integrations, and users.
 - **Risk:** low, medium, high, or critical, with reasons.
@@ -24,6 +25,10 @@ Prefer explicit task authority over inference:
 5. Existing tests and behavior as evidence of compatibility expectations.
 
 Do not borrow criteria from a similar-looking task. Do not treat a filename hint as an exhaustive implementation boundary.
+
+## Owner decisions versus builder choices
+
+A plan or PR description written by the builder or an agent is not owner authority for its implementation details. Record a detail as an acceptance criterion only when the owner decided it or an authoritative source requires it. List every other detail under builder choices, and tell specialists to challenge whether each is needed. Never present a builder choice as a requirement to verify. A persisted field that nothing reads can otherwise pass review because the contract said to add it.
 
 ## Quality of acceptance criteria
 

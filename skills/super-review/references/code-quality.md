@@ -11,7 +11,7 @@ Review whether the implementation is the simplest clear expression of the requir
 - Types make invalid states difficult to represent; casts, broad types, nullability, and unchecked assumptions are justified.
 - Comments explain only non-obvious reasons or constraints and do not restate the code.
 - Existing invariant, ordering, compatibility, workaround, and safety comments are treated as local contracts. Verify that the change still satisfies them, or that a stronger current requirement explicitly supersedes them.
-- Dead code, debug scaffolding, commented-out code, accidental generated artifacts, and unrelated churn are absent.
+- Dead code, debug scaffolding, commented-out code, accidental generated artifacts, and unrelated churn are absent. Every new field, method, export, flag, and selected column is read by production code, not only by tests. Two fields that always encode the same state count as one too many.
 - Errors are handled at the right layer with useful context and without being swallowed or duplicated.
 - Logging uses the project's dedicated logging abstraction when one exists or is required. Prefer structured context, intentional levels, and redaction. Flag direct `console.log`, `console.error`, raw stdout/stderr, or equivalent calls when they bypass that policy.
 - Formatting, file placement, imports, exports, naming patterns, and framework idioms match local precedent.

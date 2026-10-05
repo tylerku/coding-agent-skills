@@ -51,6 +51,8 @@ Read [references/review-contract.md](references/review-contract.md) when accepta
 
 Do not silently invent product decisions. If behavioral acceptance criteria remain materially incomplete, continue the code-quality audit but mark behavioral conformance `owed` or `blocked`.
 
+Keep owner decisions separate from builder choices. Only decisions made by the user or another authoritative source become acceptance criteria. Implementation details chosen by the builder, an agent, or an agent-written plan go in a separate builder-choices list. That includes new columns, fields, methods, exports, configuration, and plan specifics the owner never approved. Mark the list as not owner-approved. Specialists must challenge each builder choice for necessity, never verify it as a requirement.
+
 ## 3. Resolve Effective Review Rubrics
 
 The global dimension references are the fallback baseline. Before dispatch, look for:
@@ -108,7 +110,7 @@ Never invent a model-to-tier classification during a run, silently downgrade cap
 Use one independent specialist per applicable dimension in Balanced and Maximum. In Economy, use the compatible reviewer groups in [references/model-routing.md](references/model-routing.md#economy-dispatch), retaining Balanced capability and reasoning requirements. For each specialist or group:
 
 1. Launch an independent, report-only reviewer through the host's supported delegation mechanism. Prefer a cold context that does not inherit the builder's rationale. In Economy, use fresh group contexts without previous review conclusions; angles within a group share context and are not independent of one another.
-2. Provide only the frozen review contract, exact review target, relevant changed and adjacent files, effective rubrics for all assigned roles, project instructions, and collected factual evidence.
+2. Provide only the frozen review contract, exact review target, relevant changed and adjacent files, effective rubrics for all assigned roles, project instructions, and collected factual evidence. The contract's builder-choices list stays labeled as not owner-approved.
 3. Tell the specialist not to modify files, invoke nested reviewers, or expand scope.
 4. Require the structure in [references/output-contract.md](references/output-contract.md), with a separate result for every assigned dimension even when one invocation covers several roles.
 5. Run independent specialists concurrently when slots permit; use waves rather than weakening coverage when they do not.
