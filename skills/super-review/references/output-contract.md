@@ -11,7 +11,7 @@ Return one structured report per assigned dimension with these fields. A grouped
     "invocation": "initial:architecture",
     "runner": "codex",
     "provider": "openai",
-    "model": "gpt-5.6-sol",
+    "model": "gpt-6.1-sol",
     "capability_tier": "frontier",
     "reasoning_effort": "high",
     "native_reasoning_effort": "high",
