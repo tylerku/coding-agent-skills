@@ -15,7 +15,7 @@ providers:
       routine:
         model: gpt-5.6-luna
       advanced:
-        model: gpt-5.6-terra
+        model: gpt-6.1-sol
       frontier:
         model: gpt-6.1-sol
     reasoning_effort_map:
