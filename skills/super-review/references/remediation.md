@@ -20,13 +20,22 @@ Examples that normally require a decision include competing rollout strategies, 
 
 ## Safe repair sequence
 
-1. Confirm the PR remains open at the frozen initial head. Record the authoritative head repository owner/name as well as the head ref, and confirm that exact target is writable without force.
+1. Confirm the PR remains open at the head this run last froze: the initial head for round 1, the previous round's pushed commit afterwards. Record the authoritative head repository owner/name as well as the head ref, and confirm that exact target is writable without force.
 2. Prefer a clean isolated worktree or detached checkout at that exact SHA. Never mix repairs with unrelated local changes.
-3. Implement all `auto_fix` findings in one coordinated wave, including focused tests and documentation required by those fixes, following the repair discipline below.
+3. Implement all of the round's `auto_fix` findings in one coordinated wave, including focused tests and documentation required by those fixes, following the repair discipline below.
 4. Run the smallest authoritative focused checks for each repair, followed by broader checks required by the repository or affected surface.
 5. If verification fails, allow one bounded diagnostic correction inside the same wave. If it still fails, mark the finding `open` or `repair_owed` and do not push a knowingly failing repair.
-6. Re-fetch the PR head immediately before push. Push one ordinary commit to the exact head repository and head ref only when it still equals the initial SHA. For a fork PR, never mistake a same-named branch in the base repository for the contributor's head branch. Never force-push or overwrite an intervening update.
-7. Confirm the PR head now equals the pushed repair commit, freeze it as the final SHA, and perform post-repair specialist verification.
+6. Re-fetch the PR head immediately before push. Push one ordinary commit per round to the exact head repository and head ref only when it still equals the head this run last froze. For a fork PR, never mistake a same-named branch in the base repository for the contributor's head branch. Never force-push or overwrite an intervening update.
+7. Confirm the PR head now equals the pushed repair commit, freeze it as the round's head, and perform post-repair specialist verification. After the last round, that head is the final SHA.
+
+## Repair rounds
+
+An explicit super review may run up to three repair rounds. Each round follows the safe repair sequence above and ends with fresh verification of the dimensions it touched.
+
+- **Round 1** repairs the `auto_fix` findings from the initial adjudication.
+- **Rounds 2 and 3** run only when the previous round's verification produced new blocker or material warning findings (introduced or exposed by the repair) or showed a claimed repair did not hold. Send just those to one fresh consolidated adjudicator, apply the same dispositions, and repair the accepted `auto_fix` ones. Earlier `decision_required` and `repair_owed` findings stay as they are unless new evidence changes them.
+- **Stop** as soon as a round's verification leaves no accepted `auto_fix` finding, after the third round, or when a finding has failed verification in two rounds; mark what remains `open` or `repair_owed`. Never start a fourth round. A user may set a lower limit; a higher one needs an explicit instruction.
+- **Keep the history.** Record each round's repair commit, checks, verifiers, and the findings it fixed, so the report shows which round resolved what.
 
 When isolation is unavailable, use the existing checkout only if it is clean, exactly matches the PR head, and contains no unrelated user work. Record the chosen repair workspace and push target.
 
@@ -47,8 +56,8 @@ A repair that only patches the reported instance tends to move the defect rather
 Retain the original finding ID across every state:
 
 - `fixed`: pushed final SHA contains the repair, authoritative checks pass, and the responsible specialist or adjudicator confirms the defect is resolved without an introduced material regression.
-- `open`: the finding remains, the repair attempt failed, or the bounded wave exposed a new accepted defect.
+- `open`: the finding remains, the repair attempt failed, or the last allowed round exposed a new accepted defect.
 - `decision_required`: no edit was made because a human decision is necessary.
 - `repair_owed`: no complete pushed and verified repair was possible for an operational reason.
 
-Record the first-seen SHA, original evidence, disposition reason, repair summary, repair commit when present, verification evidence, and final state. Fixed history remains visible in the canonical report so reviewers can distinguish a clean original review from a clean result achieved through remediation.
+Record the first-seen SHA, original evidence, disposition reason, repair summary, repair round and commit when present, verification evidence, and final state. Fixed history remains visible in the canonical report so reviewers can distinguish a clean original review from a clean result achieved through remediation.

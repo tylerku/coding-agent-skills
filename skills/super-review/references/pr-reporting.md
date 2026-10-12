@@ -7,7 +7,7 @@ Always return the complete review in the active session. Pull-request publicatio
 - Resolve exactly one matching open GitHub pull request from the frozen base repository, authoritative head repository owner/name, head ref or commit, and expected base. Never review or post to a title match or a merely similar branch.
 - A matching GitHub pull request is a prerequisite for specialist dispatch, not merely an optional reporting destination. It may be pre-existing or safely created as a draft through `pr-target.md`. Draft pull requests remain eligible unless project policy says otherwise.
 - Never create a branch or non-draft pull request. Before review, pushes and draft creation are allowed only through the target-bootstrap contract; after review, repairs may push only through the bounded remediation contract.
-- An explicitly requested super-review authorizes eligible target bootstrap, the bounded repair wave, and updating the canonical informational comment unless the user opts out. If invocation was implicit, repository ownership is unclear, or the host requires confirmation, ask immediately before a write.
+- An explicitly requested super-review authorizes eligible target bootstrap, up to three bounded repair rounds, and updating the canonical informational comment unless the user opts out. If invocation was implicit, repository ownership is unclear, or the host requires confirmation, ask immediately before a write.
 - Honor project instructions and code-host permissions. Do not install a CLI or authenticate a new account without authorization.
 
 ## Canonical comment
@@ -58,7 +58,7 @@ Apply these formatting rules on every run:
 
 | Accepted | Fixed | Open | Decision required | Repair owed | Repair commit |
 | --- | --- | --- | --- | --- | --- |
-| {{accepted_count}} | {{fixed_count}} | {{open_count}} | {{decision_count}} | {{repair_owed_count}} | {{repair_commit_link_or_not_applicable}} |
+| {{accepted_count}} | {{fixed_count}} | {{open_count}} | {{decision_count}} | {{repair_owed_count}} | {{repair_commit_links_by_round_or_not_applicable}} |
 
 ### Quality matrix
 
@@ -115,9 +115,10 @@ Apply these formatting rules on every run:
 | Repair workspace | {{isolated_worktree_or_clean_checkout_or_not_applicable}} |
 | Push target | {{authoritative_head_repository_and_ref_or_not_applicable}} |
 | Auto-fix disposition | {{ids_and_disposition_or_none}} |
-| Repair commit and push | {{commit_push_result_or_not_applicable}} |
+| Repair rounds | {{rounds_run_of_three_and_stop_reason_or_not_applicable}} |
+| Repair commit and push | {{per_round_commit_push_result_or_not_applicable}} |
 | Final PR head | {{final_full_sha}} |
-| Post-repair review | {{rerun_dimensions_carried_lanes_and_result_or_not_applicable}} |
+| Post-repair review | {{per_round_rerun_dimensions_carried_lanes_and_result_or_not_applicable}} |
 
 ### Review notes
 
@@ -149,8 +150,8 @@ Fixed entries use this exact shape and retain the same finding ID across reruns 
 
 ```markdown
 - **{{finding_id}} — {{title}}** (`{{severity}}`, `{{confidence_percent}}%`) — **FIXED** — {{impact}}
-  - First seen: [evidence at `{{initial_short_sha}}`]({{immutable_initial_sha_line_url}})
-  - Resolution: {{concise_repair_summary}}
+  - First seen: [evidence at `{{first_seen_short_sha}}`]({{immutable_first_seen_sha_line_url}})
+  - Resolution: round {{repair_round}} — {{concise_repair_summary}}
   - Verified: [final code at `{{final_short_sha}}`]({{immutable_final_sha_line_url}}); {{verification_evidence}}
 ```
 
@@ -158,7 +159,7 @@ Open, decision-required, and repair-owed entries use this shape:
 
 ```markdown
 - **{{finding_id}} — {{title}}** (`{{severity}}`, `{{confidence_percent}}%`) — **{{OPEN_OR_DECISION_REQUIRED_OR_REPAIR_OWED}}** — {{impact}}
-  - Evidence: [first seen at `{{initial_short_sha}}`]({{immutable_initial_sha_line_url}})
+  - Evidence: [first seen at `{{first_seen_short_sha}}`]({{immutable_first_seen_sha_line_url}})
   - {{Smallest_fix_or_decision_needed_or_owed_action}}: {{specific_next_step}}
 ```
 
@@ -172,7 +173,7 @@ Principal-engineer recommendation entries use this shape, ranked as the reviewer
 
 If no deterministic check is applicable or runnable, retain the table and use one row with the check name, `NOT_RUN` or `BLOCKED`, and the exact reason. Never imply that a check passed when it did not run.
 
-Every accepted blocker or warning must include immutable GitHub permalinks using the relevant full initial or final SHA and an exact line range with useful surrounding context. Do not link to a moving branch ref.
+Every accepted blocker or warning must include immutable GitHub permalinks using the relevant full first-seen (the initial head, or the round head where a later round found it) or final SHA and an exact line range with useful surrounding context. Do not link to a moving branch ref.
 
 ## Freshness gate
 

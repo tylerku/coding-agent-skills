@@ -69,7 +69,8 @@ Specialists propose findings only. They do not decide whether the orchestrator m
   "repair_disposition": "auto_fix|decision_required|repair_owed",
   "resolution_state": "fixed|open|decision_required|repair_owed",
   "disposition_reason": "why repair is safe, requires a decision, or is operationally owed",
-  "repair_commit": "full final SHA or null",
+  "repair_round": "1, 2, 3, or null",
+  "repair_commit": "full SHA of the round's repair commit or null",
   "repair_summary": "what changed or why no edit was made",
   "verification": ["command, specialist conclusion, or other exact evidence"]
 }
