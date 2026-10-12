@@ -71,6 +71,10 @@ roles:
     capability_tier: frontier
     reasoning_effort: high
     execution_mode: single_agent
+  principal_engineer:
+    capability_tier: frontier
+    reasoning_effort: high
+    execution_mode: single_agent
   synthesis:
     capability_tier: frontier
     reasoning_effort: high
@@ -94,6 +98,9 @@ profiles:
         roles: [ui_accessibility, performance_reliability]
       security:
         roles: [security]
+      principal:
+        # Advisory lane; always its own fresh invocation so dimension checklists do not narrow its view.
+        advisory_roles: [principal_engineer]
   balanced:
     role_overrides: {}
   maximum:
@@ -115,6 +122,8 @@ profiles:
       security:
         reasoning_effort: maximum
       architecture:
+        reasoning_effort: maximum
+      principal_engineer:
         reasoning_effort: maximum
       synthesis:
         reasoning_effort: maximum

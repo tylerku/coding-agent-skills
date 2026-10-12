@@ -12,6 +12,8 @@ Assign every accepted blocker and warning exactly one disposition before editing
 
 Do not auto-fix an improvement unless the user explicitly includes improvements. Do not use confidence alone to decide repairability.
 
+Principal-engineer suggestions and owner questions are never repaired. An accepted principal-engineer finding that changes the overall approach, such as restructuring, re-homing logic, or redesigning a schema or API, is normally `decision_required` because it chooses among materially different designs. It is `auto_fix` only when the better approach is already established, for example by replacing a reimplementation with the existing in-repo capability it duplicates, or by applying an explicit project rule. Verify a repaired principal-engineer finding through its assigned dimension; do not rerun the principal engineer after repairs.
+
 Examples that are normally `auto_fix` when supported by the repository contract include introduced type errors, missing error handling with established behavior, stale-cache invalidation, logger-policy violations, accessible labels, clearly missing regression tests, and direct violations of an explicit convention.
 
 Examples that normally require a decision include competing rollout strategies, unresolved timezone or data ownership policy, public API compatibility choices without a declared migration contract, destructive schema changes, security-policy changes, and fixes that materially expand feature scope. A technically difficult fix may still be `auto_fix` when its required outcome is unambiguous; a small edit may still require a decision when it chooses behavior.
