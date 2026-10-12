@@ -2,12 +2,12 @@
 name: super-review
 description: Resolve or safely create a draft GitHub pull request, run a comprehensive provider-neutral code review, repair clear accepted findings when authorized, verify the resulting head, and publish standard review state. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use for an ordinary narrow review or as a substitute for product smoke testing.
 metadata:
-  version: "1.6.0"
+  version: "1.7.0"
 ---
 
 # Comprehensive Code Review and Remediation
 
-Audit a frozen GitHub pull request through parallel specialist reviewers, deterministic code evidence, historical context, consolidated finding adjudication, bounded remediation of clear findings, and a final completeness matrix. Keep reviewer roles independent of AI provider and never present source review as proof that a running product works.
+Audit a frozen GitHub pull request through parallel specialist reviewers, deterministic code evidence, historical context, a principal-engineer review of the overall approach, consolidated finding adjudication, bounded remediation of clear findings, and a final completeness matrix. Keep reviewer roles independent of AI provider and never present source review as proof that a running product works.
 
 ## Operating Contract
 
@@ -119,11 +119,13 @@ The code-quality lane has one judgment owner meeting at least its configured `ad
 
 Read [references/historical-context.md](references/historical-context.md). In Balanced and Maximum, launch one `historical_context` specialist in parallel with the applicable dimension specialists. In Economy, assign this work to the structure group without another invocation. Its evidence and candidate findings feed the relevant dimensions; it is not a ninth matrix dimension.
 
+Read [references/principal-engineer.md](references/principal-engineer.md). In every profile, launch one `principal_engineer` reviewer in its own fresh invocation, in parallel with the other specialists, unless the change is trivial or mechanical as that reference defines. Give it the same factual packet as the specialists, including the builder-choices list, but no other reviewer's conclusions. It judges whether the overall approach is what an expert who knows this codebase would have built, and returns a verdict with at most five ranked recommendations under [references/output-contract.md](references/output-contract.md#principal-engineer-report). It is an advisory lane, not a matrix dimension.
+
 Do not count the primary orchestrator or an implementation agent as an independent specialist.
 
 ## 7. Adjudicate Material Findings Once
 
-After the parallel specialists finish, collect all proposed `blocker` and material `warning` findings into one deduplicated packet. Also include any `improvement` that alleges a violation of a mandatory project architecture rule, so a severity downgrade cannot bypass adjudication. If the packet is non-empty, launch one independent `finding_adjudication` reviewer. Use the critical adjudication role for high-risk findings or conflicting specialist conclusions. Do not launch one validator per finding and do not run a separate cold backstop panel.
+After the parallel specialists finish, collect all proposed `blocker` and material `warning` findings into one deduplicated packet. Also include any `improvement` that alleges a violation of a mandatory project architecture rule, so a severity downgrade cannot bypass adjudication, and every `material` principal-engineer recommendation as a candidate `warning` in its suggested dimension. If the packet is non-empty, launch one independent `finding_adjudication` reviewer. Use the critical adjudication role for high-risk findings or conflicting specialist conclusions. Do not launch one validator per finding and do not run a separate cold backstop panel.
 
 The adjudicator must attempt to disprove each finding by checking:
 
@@ -134,9 +136,10 @@ The adjudicator must attempt to disprove each finding by checking:
 - existing tests or deterministic evidence;
 - the cited project or universal rule;
 - whether an alleged mandatory architecture-rule violation was incorrectly labeled optional, and whether any claimed exception actually covers the code;
-- whether the proposed fix belongs inside scope.
+- whether the proposed fix belongs inside scope;
+- for a principal-engineer recommendation, whether the alternative is genuinely better in this codebase, whether the cited existing code or rule supports it, and whether the cost of not taking it is concrete rather than a matter of taste.
 
-Classify each finding as `accepted`, `rejected`, `follow_up`, or `escalated`. Preserve a brief reason, the adjudicator's updated confidence, and any severity correction. Apply the architecture rubric's minimum `warning` severity to confirmed in-scope mandatory layer violations; optional improvements remain report-only. The primary orchestrator may verify citations and resolve duplicates, but it must not silently overturn a material adjudication; disclose any unresolved disagreement.
+Classify each finding as `accepted`, `rejected`, `follow_up`, or `escalated`. Preserve a brief reason, the adjudicator's updated confidence, and any severity correction. An accepted principal-engineer recommendation becomes a finding in its suggested dimension, or another dimension the adjudicator names, and keeps its `PE-` identifier. A rejected or downgraded one remains report-only advice. Apply the architecture rubric's minimum `warning` severity to confirmed in-scope mandatory layer violations; optional improvements remain report-only. The primary orchestrator may verify citations and resolve duplicates, but it must not silently overturn a material adjudication; disclose any unresolved disagreement.
 
 ## 8. Repair Clear Accepted Findings
 
@@ -158,10 +161,11 @@ The primary orchestrator verifies accepted findings against the repository, dedu
 4. Accepted findings grouped by resolution state, including first-seen and fixed SHAs.
 5. Rejected and follow-up findings with short reasons.
 6. Historical evidence and whether it changed any conclusion.
-7. Provider, model, runner, capability tier, reasoning effort, and fallback used per role, identifying roles that shared an invocation.
-8. Rubric sources used per dimension.
-9. Runtime limitations and other remaining uncertainty.
-10. Initial and final reviewed SHAs, repair commit and checks, pull-request publication state, and the smallest next action.
+7. Principal-engineer verdict, the strengths it would keep, and each recommendation with its weight and disposition.
+8. Provider, model, runner, capability tier, reasoning effort, and fallback used per role, identifying roles that shared an invocation.
+9. Rubric sources used per dimension.
+10. Runtime limitations and other remaining uncertainty.
+11. Initial and final reviewed SHAs, repair commit and checks, pull-request publication state, and the smallest next action.
 
 Compute each final matrix status after repair verification. Use this precedence: `blocked`, then `owed`, then `decision_required`, then `findings`, then `pass_after_fixes`, then `pass`; `not_applicable` is used only when the lane truly does not apply. A `blocked` or `owed` lane may still list accepted findings. Use `pass_after_fixes` only when every accepted finding in that lane was verified fixed on the final SHA. If every proposed finding is rejected and evidence is otherwise sufficient, the final lane becomes `pass`.
 
@@ -173,4 +177,4 @@ Read [references/pr-reporting.md](references/pr-reporting.md). Always present th
 
 Immediately before publication, re-fetch the pull request and verify that it remains open and its base repository, number, authoritative head repository, full final head SHA, head ref, and base ref still match the frozen final target. If any value changed, do not publish the stale result; report `stale` with the reviewed and current values and require a new run.
 
-When freshness is confirmed and publication is authorized, render the exact canonical structure in [references/pr-reporting.md](references/pr-reporting.md) and create or update exactly one informational comment identified by `<!-- super-review-report:v4 -->`. Preserve its heading order, status vocabulary, empty states, finding history, repair receipt, and reviewer-receipt table on every run. If publishing fails, preserve the complete session report and mark publication `owed`; do not change the source-review result.
+When freshness is confirmed and publication is authorized, render the exact canonical structure in [references/pr-reporting.md](references/pr-reporting.md) and create or update exactly one informational comment identified by `<!-- super-review-report:v5 -->`. Preserve its heading order, status vocabulary, empty states, finding history, principal-engineer section, repair receipt, and reviewer-receipt table on every run. If publishing fails, preserve the complete session report and mark publication `owed`; do not change the source-review result.

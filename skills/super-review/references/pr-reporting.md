@@ -15,10 +15,10 @@ Always return the complete review in the active session. Pull-request publicatio
 Use exactly one comment containing this marker as its first line:
 
 ```html
-<!-- super-review-report:v4 -->
+<!-- super-review-report:v5 -->
 ```
 
-Search first for the v4 marker. For migration, also search for `<!-- super-review-report:v3 -->`, `<!-- super-review-report:v2 -->`, and `<!-- super-review-report:v1 -->`. Update an existing marked comment only when it is owned by the active reviewer identity; replace an owned older comment in place with the v4 structure and marker. Otherwise create one new v4 comment. Never edit another author's marked comment and never append a fresh comment on every rerun.
+Search first for the v5 marker. For migration, also search for `<!-- super-review-report:v4 -->`, `<!-- super-review-report:v3 -->`, `<!-- super-review-report:v2 -->`, and `<!-- super-review-report:v1 -->`. Update an existing marked comment only when it is owned by the active reviewer identity; replace an owned older comment in place with the v5 structure and marker. Otherwise create one new v5 comment. Never edit another author's marked comment and never append a fresh comment on every rerun.
 
 ## Fixed rendering contract
 
@@ -31,6 +31,7 @@ Allowed values:
 - Finding resolution: `FIXED`, `OPEN`, `DECISION_REQUIRED`, `REPAIR_OWED`.
 - Check result: `PASS`, `FAIL`, `NOT_RUN`, `BLOCKED`.
 - Adjudication state: `COMPLETED`, `NOT_REQUIRED`, `OWED`.
+- Principal-engineer verdict: `ENDORSE`, `ENDORSE_WITH_SUGGESTIONS`, `RECONSIDER_APPROACH`, `NOT_APPLICABLE`, `OWED`. It is advisory and never changes the overall state; accepted principal-engineer findings affect state only through their dimension.
 
 Apply these formatting rules on every run:
 
@@ -44,7 +45,7 @@ Apply these formatting rules on every run:
 - Do not add emojis, badges, extra headings, generated-by signatures, or prose outside the template.
 
 ````markdown
-<!-- super-review-report:v4 -->
+<!-- super-review-report:v5 -->
 ## Super Review
 
 | State | Initial head | Final head | Base | Profile | Reviewed at |
@@ -93,6 +94,12 @@ Apply these formatting rules on every run:
 #### Improvements
 
 {{improvement_entries_or_none}}
+
+### Principal engineer perspective
+
+**{{principal_verdict}}** — {{one_sentence_overall_take_or_not_applicable_reason}}
+
+{{principal_recommendation_entries_or_none}}
 
 ### Deterministic checks
 
@@ -153,6 +160,14 @@ Open, decision-required, and repair-owed entries use this shape:
 - **{{finding_id}} — {{title}}** (`{{severity}}`, `{{confidence_percent}}%`) — **{{OPEN_OR_DECISION_REQUIRED_OR_REPAIR_OWED}}** — {{impact}}
   - Evidence: [first seen at `{{initial_short_sha}}`]({{immutable_initial_sha_line_url}})
   - {{Smallest_fix_or_decision_needed_or_owed_action}}: {{specific_next_step}}
+```
+
+Principal-engineer recommendation entries use this shape, ranked as the reviewer returned them. An accepted recommendation also appears under Findings with the same `PE-` identifier; here it shows the disposition only:
+
+```markdown
+- **{{recommendation_id}} — {{title}}** (`{{weight}}`, `{{reversibility}}`) — {{alternative}}
+  - Why: {{tradeoff}}
+  - Disposition: {{accepted_as_dimension_finding_or_report_only_or_raise_with_owner_or_rejected_with_reason}}
 ```
 
 If no deterministic check is applicable or runnable, retain the table and use one row with the check name, `NOT_RUN` or `BLOCKED`, and the exact reason. Never imply that a check passed when it did not run.

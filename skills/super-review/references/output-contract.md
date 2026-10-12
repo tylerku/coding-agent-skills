@@ -79,6 +79,42 @@ Do not use `fixed` until the repair is pushed and verified on the PR's final SHA
 
 Use `blocker` only when the current change cannot safely land. Use `warning` for a real, material quality problem that may be consciously accepted. Use `improvement` for worthwhile non-blocking refinement. Do not encode importance in confidence. For mandatory project layer rules, apply the classification requirements in [architecture.md](architecture.md#project-boundary-conformance): a verified in-scope violation is at least `warning`, unless an explicit applicable exception or superseding instruction establishes conformance. Repair cost or approval needs do not make the violation an optional improvement.
 
+## Principal engineer report
+
+The `principal_engineer` advisory lane returns one report in this shape instead of a dimension report. Follow [principal-engineer.md](principal-engineer.md) for the verdict and weight rules:
+
+```json
+{
+  "lane": "principal_engineer",
+  "status": "completed|not_applicable|owed",
+  "verdict": "endorse|endorse_with_suggestions|reconsider_approach",
+  "reviewer": { "role": "principal_engineer", "invocation": "initial:principal" },
+  "problem_statement": "the problem in one or two sentences, independent of the chosen solution",
+  "independent_sketch": "how you would have approached it in this codebase, in a few sentences",
+  "strengths": ["what the change gets right and should keep"],
+  "recommendations": [
+    {
+      "id": "PE-1",
+      "title": "Short concrete title",
+      "weight": "material|suggestion|raise_with_owner",
+      "theme": "problem_fit|simplicity|reuse|placement|data_api_design|failure_design|operability|evolvability|scope_sequencing|testability",
+      "confidence": 0.0,
+      "location": { "path": "src/example.ts", "line": 42 },
+      "current": "what the change does now",
+      "alternative": "what to do instead, concretely enough to act on",
+      "basis": "existing code, pattern, rule, or contract supporting the alternative",
+      "tradeoff": "what the alternative costs and saves, and when the difference matters",
+      "reversibility": "one_way|two_way",
+      "suggested_dimension": "architecture"
+    }
+  ],
+  "incidental_observations": [],
+  "unknowns": []
+}
+```
+
+`reviewer` carries the same routing fields as a dimension report. Rank recommendations by value and return at most five. `confidence` uses the anchors below and measures whether the factual basis is correct, not how much better the alternative is. `suggested_dimension` uses a dimension identifier. `incidental_observations` holds possible defects outside this lane for the orchestrator to route to the responsible dimension; they are not findings until a specialist or the adjudicator establishes them.
+
 ## Confidence anchors
 
 `confidence` estimates whether the finding's factual claim is correct. It does not measure severity, impact, or how strongly the reviewer feels.

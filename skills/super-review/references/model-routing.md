@@ -34,13 +34,13 @@ The configured user preference disables Fable for Anthropic reviews and caps the
 
 ## Profiles
 
-Economy is the default. It keeps Balanced's role capability and reasoning requirements, including synthesis and adjudication, but groups related roles into fewer invocations as defined by `profiles.economy.reviewer_groups` in `reviewer-requirements.yml`. Balanced is an explicit opt-in and uses one independent invocation per applicable dimension plus historical context. Maximum retains separate specialists and applies its explicit specialist and adjudication upgrades. A profile is a routing policy, not a promise that unavailable models exist.
+Economy is the default. It keeps Balanced's role capability and reasoning requirements, including synthesis and adjudication, but groups related roles into fewer invocations as defined by `profiles.economy.reviewer_groups` in `reviewer-requirements.yml`. Balanced is an explicit opt-in and uses one independent invocation per applicable dimension plus historical context. Every profile runs the applicable `principal_engineer` advisory lane in its own invocation. Maximum retains separate specialists and applies its explicit specialist and adjudication upgrades. A profile is a routing policy, not a promise that unavailable models exist.
 
 A plain “Run $super-review” uses Economy. Request separate specialists with “Run $super-review using the Balanced profile.” Economy changes reviewer count, not the required coverage or model capability.
 
 ### Economy dispatch
 
-- Determine applicability per dimension before grouping. Launch one fresh, report-only reviewer for each non-empty configured group, normally at most four initial reviewers. Omit inapplicable dimension roles. Include historical context in the structure group even when its dimensions do not apply; include the mechanical prepass only when code quality applies. Do not spawn separate history or mechanical-prepass reviewers in Economy.
+- Determine applicability per dimension before grouping. Launch one fresh, report-only reviewer for each non-empty configured group, normally at most five initial reviewers including the principal engineer. Omit inapplicable dimension roles. Include historical context in the structure group even when its dimensions do not apply; include the mechanical prepass only when code quality applies. Do not spawn separate history or mechanical-prepass reviewers in Economy. Never fold the principal engineer into a dimension group: its value comes from judging the whole approach without a dimension checklist narrowing its view.
 - Resolve each assigned role using the normal user/project/provider precedence. For a compatible group, use the highest required capability tier and reasoning effort among its assigned roles, then apply provider ceilings. Lower-tier roles may share that stronger reviewer; no role is downgraded to save cost. Record actual routing for each role.
 - If explicit role-specific models, provider constraints, or a required independent specialist prevent sharing an invocation, split only the incompatible roles and disclose the extra invocations. If no eligible routing fits the user's ceiling, mark the affected roles `owed`; grouping does not override model choices or ceilings.
 - Give each group a common factual packet: frozen target and acceptance criteria, applicable project instructions, relevant changed and adjacent paths, and collected deterministic evidence. Add all assigned role rubrics. Exclude builder rationale and other reviewers' conclusions. Reuse factual evidence, not another reviewer's judgments; inspect original source as needed.
@@ -70,6 +70,7 @@ For a Claude review using the Balanced profile, resolve each role to the followi
 | `contract_extraction` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
 | `rule_discovery` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
 | `citation_validation` | `claude-sonnet-5-5` | `high` | `super-review-routine-high` |
+| `principal_engineer` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
 | `critical_finding_adjudication` | `claude-opus-5-5` | `high` | `super-review-frontier-high` |
 | `synthesis` | `claude-opus-5-5` | `high` | Orchestrator; do not spawn another reviewer |
 
@@ -83,4 +84,4 @@ Apply the `critical_finding_adjudication` role when a finding involves authentic
 
 Do not escalate mechanical rule matching merely because the result is unpopular. Do not let a lower-tier reviewer make the final decision on a disputed high-impact finding.
 
-Run the applicable specialists or Economy groups independently and in parallel when slots permit. Historical context has its own specialist in Balanced and Maximum and belongs to the structure group in Economy. Use one consolidated adjudicator only when material candidate findings exist. Do not add redundant backstop reviewers merely to increase reviewer count.
+Run the applicable specialists or Economy groups independently and in parallel when slots permit. Historical context has its own specialist in Balanced and Maximum and belongs to the structure group in Economy. The principal engineer always has its own invocation. Use one consolidated adjudicator only when material candidate findings exist. Do not add redundant backstop reviewers merely to increase reviewer count.
