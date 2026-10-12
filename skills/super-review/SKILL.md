@@ -2,16 +2,16 @@
 name: super-review
 description: Resolve or safely create a draft GitHub pull request, run a comprehensive provider-neutral code review, repair clear accepted findings when authorized, verify the resulting head, and publish standard review state. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use for an ordinary narrow review or as a substitute for product smoke testing.
 metadata:
-  version: "1.7.0"
+  version: "1.8.0"
 ---
 
 # Comprehensive Code Review and Remediation
 
-Audit a frozen GitHub pull request through parallel specialist reviewers, deterministic code evidence, historical context, a principal-engineer review of the overall approach, consolidated finding adjudication, bounded remediation of clear findings, and a final completeness matrix. Keep reviewer roles independent of AI provider and never present source review as proof that a running product works.
+Audit a frozen GitHub pull request through parallel specialist reviewers, deterministic code evidence, historical context, a principal-engineer review of the overall approach, consolidated finding adjudication, up to three bounded remediation rounds for clear findings, and a final completeness matrix. Keep reviewer roles independent of AI provider and never present source review as proof that a running product works.
 
 ## Operating Contract
 
-- An explicitly requested super review authorizes one bounded repair wave on the matching pull-request branch for accepted blockers and warnings whose smallest correct fix is clear and decision-free, unless the user requests report-only behavior. Use an isolated checkout when practical, preserve unrelated work, and ask immediately before mutation when the host or repository requires separate confirmation.
+- An explicitly requested super review authorizes up to three bounded repair rounds on the matching pull-request branch for accepted blockers and warnings whose smallest correct fix is clear and decision-free, unless the user requests report-only behavior. Use an isolated checkout when practical, preserve unrelated work, and ask immediately before mutation when the host or repository requires separate confirmation.
 - An explicit super-review request authorizes one normal push of already committed feature-branch state and one draft pull-request creation when no matching PR exists and every condition in [references/pr-target.md](references/pr-target.md) is satisfied. It never authorizes committing dirty work or choosing among ambiguous repositories, branches, or bases. If invocation was implicit or the host requires separate confirmation, ask immediately before either write.
 - Do not create a branch or non-draft pull request, force-push, rebase, merge, deploy, submit an approving or changes-requested review, repair unrelated debt, or mutate production data or external systems.
 - Exactly one matching open GitHub pull request is mandatory before specialist dispatch. It may be pre-existing or safely bootstrapped as a draft. Draft pull requests are eligible unless the user or project policy excludes them. If a unique target cannot be resolved or safely created, stop before dispatch and report `blocked`.
@@ -145,11 +145,13 @@ Classify each finding as `accepted`, `rejected`, `follow_up`, or `escalated`. Pr
 
 Read [references/remediation.md](references/remediation.md). Classify every accepted blocker and warning as `auto_fix`, `decision_required`, or `repair_owed`. Improvements are report-only unless the user explicitly requests them.
 
-Repair all `auto_fix` findings in one coordinated implementation wave. Do not let parallel agents edit the same worktree. Before pushing, run the authoritative focused checks, confirm the original PR head repository, ref, and SHA are unchanged, and use a normal non-force push to that exact head repository and ref. If any target identity or SHA changed, stop and report `stale`; never overwrite another contributor's update.
+Repair in up to three bounded rounds. Each round repairs every currently accepted `auto_fix` finding in one coordinated implementation wave. Do not let parallel agents edit the same worktree. Before pushing, run the authoritative focused checks, confirm the PR head repository, ref, and SHA still equal the head this run last froze (the initial head for round 1, the previous round's pushed commit afterwards), and use a normal non-force push to that exact head repository and ref. If any target identity or SHA changed, stop and report `stale`; never overwrite another contributor's update.
 
-After a successful push, freeze the resulting head SHA. Re-run deterministic checks and independent specialist review for every dimension that had an accepted finding or is materially affected by the repair diff, using the selected profile's dispatch policy. In Economy, use fresh verification contexts and group only the dimensions requiring verification. Carry an earlier passing lane forward only when its reviewed scope is unchanged, and record that basis. If a repair introduces or exposes another accepted finding, leave it open after this one bounded repair wave rather than looping.
+After each successful push, freeze the resulting head SHA. Re-run deterministic checks and independent specialist review for every dimension that had an accepted finding or is materially affected by that round's repair diff, using the selected profile's dispatch policy. In Economy, use fresh verification contexts and group only the dimensions requiring verification. Carry an earlier passing lane forward only when its reviewed scope is unchanged, and record that basis.
 
-Set each accepted finding to `fixed`, `open`, `decision_required`, or `repair_owed`. Preserve its original finding ID and first-seen SHA. A repair is `fixed` only when verification passes on the pushed final SHA.
+When a round's verification proposes new blocker or material warning findings, introduced or exposed by the repair, or shows that a claimed repair did not hold, send only those to one fresh consolidated adjudicator, then classify the accepted ones under the same rules. Start another round only if at least one accepted finding is `auto_fix`; otherwise stop. Never start a fourth round. After the third round, or once a finding has failed verification in two rounds, leave what remains `open` (or `repair_owed`) and report it rather than looping. A user may lower the limit, including to report-only; raising it requires an explicit instruction.
+
+Set each accepted finding to `fixed`, `open`, `decision_required`, or `repair_owed`. Preserve its original finding ID, first-seen SHA, and the round that fixed it. A repair is `fixed` only when verification passes on the pushed final SHA, the head after the last round.
 
 ## 9. Synthesize
 
@@ -165,7 +167,7 @@ The primary orchestrator verifies accepted findings against the repository, dedu
 8. Provider, model, runner, capability tier, reasoning effort, and fallback used per role, identifying roles that shared an invocation.
 9. Rubric sources used per dimension.
 10. Runtime limitations and other remaining uncertainty.
-11. Initial and final reviewed SHAs, repair commit and checks, pull-request publication state, and the smallest next action.
+11. Initial and final reviewed SHAs, each repair round's commit and checks, pull-request publication state, and the smallest next action.
 
 Compute each final matrix status after repair verification. Use this precedence: `blocked`, then `owed`, then `decision_required`, then `findings`, then `pass_after_fixes`, then `pass`; `not_applicable` is used only when the lane truly does not apply. A `blocked` or `owed` lane may still list accepted findings. Use `pass_after_fixes` only when every accepted finding in that lane was verified fixed on the final SHA. If every proposed finding is rejected and evidence is otherwise sufficient, the final lane becomes `pass`.
 
