@@ -28,7 +28,7 @@ Do not borrow criteria from a similar-looking task. Do not treat a filename hint
 
 ## Owner decisions versus builder choices
 
-A plan or PR description written by the builder or an agent is not owner authority for its implementation details. Record a detail as an acceptance criterion only when the owner decided it or an authoritative source requires it. List every other detail under builder choices, and tell specialists to challenge whether each is needed. Never present a builder choice as a requirement to verify. A persisted field that nothing reads can otherwise pass review because the contract said to add it.
+A plan or PR description written by the builder or an agent is not owner authority for its implementation details. Record a detail as an acceptance criterion only when the owner decided it or an authoritative source requires it. List every other detail under builder choices, and tell specialists to challenge whether each is needed. Never present a builder choice as a requirement to verify. A persisted field that nothing reads can otherwise pass review because the contract said to add it. List new tables, models, columns, and migrations separately as schema additions, and ask specialists both whether each is read and whether a design without it would meet the requirement. A table with readers can still be unnecessary when the data was already in hand where the work could be done.
 
 ## Quality of acceptance criteria
 

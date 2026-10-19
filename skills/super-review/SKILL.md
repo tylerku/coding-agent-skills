@@ -2,7 +2,7 @@
 name: super-review
 description: Resolve or safely create a draft GitHub pull request, run a comprehensive provider-neutral code review, repair clear accepted findings when authorized, verify the resulting head, and publish standard review state. Use for an explicitly requested super review, exhaustive PR review, or comprehensive quality audit. Do not use for an ordinary narrow review or as a substitute for product smoke testing.
 metadata:
-  version: "1.8.0"
+  version: "1.9.0"
 ---
 
 # Comprehensive Code Review and Remediation
@@ -51,7 +51,7 @@ Read [references/review-contract.md](references/review-contract.md) when accepta
 
 Do not silently invent product decisions. If behavioral acceptance criteria remain materially incomplete, continue the code-quality audit but mark behavioral conformance `owed` or `blocked`.
 
-Keep owner decisions separate from builder choices. Only decisions made by the user or another authoritative source become acceptance criteria. Implementation details chosen by the builder, an agent, or an agent-written plan go in a separate builder-choices list. That includes new columns, fields, methods, exports, configuration, and plan specifics the owner never approved. Mark the list as not owner-approved. Specialists must challenge each builder choice for necessity, never verify it as a requirement.
+Keep owner decisions separate from builder choices. Only decisions made by the user or another authoritative source become acceptance criteria. Implementation details chosen by the builder, an agent, or an agent-written plan go in a separate builder-choices list. That includes new columns, fields, methods, exports, configuration, and plan specifics the owner never approved. Mark the list as not owner-approved. Specialists must challenge each builder choice for necessity, never verify it as a requirement. List every new table, model, column, persisted field, and migration in its own schema-additions entry; none is presumed necessary, even when the builder brief, plan, or this review's own instructions proposed it.
 
 ## 3. Resolve Effective Review Rubrics
 

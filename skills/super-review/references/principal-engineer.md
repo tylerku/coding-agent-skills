@@ -20,7 +20,7 @@ Run this lane for every change with meaningful non-test logic, new interfaces, n
 - **Simplicity:** Could materially less code, fewer moving parts, or fewer new concepts achieve the same result? Look for needless layers, indirection, configuration, and generality. Also look for the reverse: copy-paste where an existing abstraction fits.
 - **Reuse:** Does the change reimplement an existing utility, service, pattern, dependency already in the tree, or framework or platform feature?
 - **Placement:** Does the module, layer, or service that best owns this logic hold it, even where no documented rule says so?
-- **Data and API design:** Will new models, schemas, interfaces, and names read well and age well? Is state modeled so invalid states are hard to represent? Challenge every builder choice for necessity.
+- **Data and API design:** Will new models, schemas, interfaces, and names read well and age well? Is state modeled so invalid states are hard to represent? Challenge every builder choice for necessity. For new persisted state, ask whether the work could happen where the data is already in hand, so nothing needs storing.
 - **Failure design:** Is the approach robust by construction under dependency failure, retries, duplicate delivery, and partial completion, rather than relying on careful callers?
 - **Operability:** Can an on-call engineer understand, observe, and roll back this change? Consider flags, logging at decision points, and reversible migrations.
 - **Evolvability:** What does this make harder later? One-way doors such as public APIs, persisted schema, external contracts, and event formats deserve far more scrutiny than internals that are cheap to change.
