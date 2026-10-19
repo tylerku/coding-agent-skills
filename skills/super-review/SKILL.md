@@ -51,7 +51,7 @@ Read [references/review-contract.md](references/review-contract.md) when accepta
 
 Do not silently invent product decisions. If behavioral acceptance criteria remain materially incomplete, continue the code-quality audit but mark behavioral conformance `owed` or `blocked`.
 
-Keep owner decisions separate from builder choices. Only decisions made by the user or another authoritative source become acceptance criteria. Implementation details chosen by the builder, an agent, or an agent-written plan go in a separate builder-choices list. That includes new columns, fields, methods, exports, configuration, and plan specifics the owner never approved. Mark the list as not owner-approved. Specialists must challenge each builder choice for necessity, never verify it as a requirement. List every new table, model, column, persisted field, and migration in its own schema-additions entry; none is presumed necessary, even when the builder brief, plan, or this review's own instructions proposed it.
+Keep owner decisions separate from builder choices. Only decisions made by the user or another authoritative source become acceptance criteria. Implementation details chosen by the builder, an agent, or an agent-written plan go in a separate builder-choices list. That includes new columns, fields, methods, exports, configuration, and plan specifics the owner never approved. Mark the list as not owner-approved. Specialists must challenge each builder choice for necessity, never verify it as a requirement.
 
 ## 3. Resolve Effective Review Rubrics
 

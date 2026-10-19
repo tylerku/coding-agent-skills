@@ -12,7 +12,6 @@ Review whether the change fits the system's intended boundaries and remains evol
 - Whether an abstraction removes meaningful duplication or instead hides a simple local operation.
 - Duplicate sources of truth or parallel implementations that can drift.
 - Necessity of every added schema column, persisted field, model property, public API method, export, and configuration key. Each needs a reader or a documented consumer in the change or an authoritative plan. Flag one that is only written, or that duplicates state already recorded elsewhere (for example a timestamp a related row already holds).
-- Necessity of persistence itself. For every new table, model, column, persisted field, or migration, state what would break if it were not stored, and name the designs that avoid storing it: acting at the moment the data is already available, deriving it from rows that already exist, or reusing an existing table or column. Having a reader does not make storage necessary.
 - Migration, rollout, mixed-version, rollback, and feature-flag behavior where applicable.
 - The project's documented architecture and approved exceptions.
 
@@ -27,7 +26,5 @@ For changed code crossing a documented layer boundary, record the applicable rul
 When atomicity is offered as a reason for placing business logic in persistence, inspect the project's transaction or unit-of-work mechanism first. Trace whether the intended owner can execute its rules through data-access objects sharing one transaction client. Verify participating reads/writes use that client, required failures propagate to rollback, and concurrency-sensitive invariants retain their locks or conditional checks. A transaction wrapper alone does not justify moving policy into persistence; an exception for atomic database operations does not automatically cover business decisions.
 
 Classify an added persisted column or field that nothing reads, or that duplicates existing state, as at least `warning`: once released, schema is costly to remove. Show the writes and the absence of readers. A builder choice in the contract does not exempt it.
-
-Classify an added table, model, column, or migration as at least `warning` when a design without it meets the same owner requirement, even if the new schema has readers. Name that design, show where the needed data is already available, and state what the stored version adds that the owner actually asked for (for example retries or history). If nothing the owner asked for depends on storing it, the addition is unnecessary. A builder brief, plan, or contract that proposed the schema does not exempt it.
 
 Classify a verified, in-scope violation of a mandatory project layer rule as at least `warning`, even when tests pass and no runtime bug is demonstrated. Cite the exact rule and code; explain the misplaced responsibility and maintenance or correctness consequence. Reserve `improvement` for optional design refinements that satisfy applicable rules. An explicit approved exception or superseding instruction must be cited and shown to apply. Repair difficulty or the need for authorization changes repair disposition, not severity.
