@@ -8,7 +8,7 @@ The workflow definitions follow the shared Agent Skills `SKILL.md` format and in
 
 | Skill | Description | Current release |
 | --- | --- | --- |
-| `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.1` |
+| `pr-review` | Focused single-reviewer must-fix gate for open pull requests | `pr-review-v1.2.2` |
 | `super-review` | Comprehensive, provider-neutral review and repair of GitHub pull requests | `super-review-v1.6.1` |
 | `smoke-test` | Risk-scaled runtime feature challenges with edge cases and screenshot evidence | `smoke-test-v1.3.0` |
 
@@ -20,7 +20,7 @@ Ask Codex:
 
 Or install the focused gate:
 
-> Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.2.1/skills/pr-review`.
+> Use `$skill-installer` to install `pr-review` from `https://github.com/tylerku/coding-agent-skills/tree/pr-review-v1.2.2/skills/pr-review`.
 
 Or install the runtime journey tester:
 
@@ -38,7 +38,7 @@ cd coding-agent-skills
 python3 scripts/install_skill.py super-review --host claude
 ```
 
-Replace the tag and skill name with `pr-review-v1.2.1` / `pr-review` or `smoke-test-v1.3.0` / `smoke-test` as needed. The installer refuses to overwrite an existing skill or bundled Claude agent definition. Before upgrading, preserve or remove the old skill directory and any associated definitions under `~/.claude/agents/coding-agent-skills/`. Claude Code detects additions inside existing personal skills and agents directories live. Restart Claude Code when either top-level directory did not exist when the session started.
+Replace the tag and skill name with `pr-review-v1.2.2` / `pr-review` or `smoke-test-v1.3.0` / `smoke-test` as needed. The installer refuses to overwrite an existing skill or bundled Claude agent definition. Before upgrading, preserve or remove the old skill directory and any associated definitions under `~/.claude/agents/coding-agent-skills/`. Claude Code detects additions inside existing personal skills and agents directories live. Restart Claude Code when either top-level directory did not exist when the session started.
 
 The same installer can install a checked-out release into Codex with `--host codex`, or both personal skill directories with `--host both`. When a skill bundles Claude Code subagents, the installer places those definitions under `~/.claude/agents/coding-agent-skills/` and refuses to overwrite an existing definition.
 
