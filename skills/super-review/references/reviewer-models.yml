@@ -1,7 +1,7 @@
 version: 1
 
 metadata:
-  verified_on: "2026-10-04"
+  verified_on: "2026-11-21"
   sources:
     openai: https://developers.openai.com/api/docs/guides/latest-model
     anthropic: https://platform.claude.com/docs/en/models/overview
@@ -15,9 +15,9 @@ providers:
       routine:
         model: gpt-5.6-luna
       advanced:
-        model: gpt-6.1-sol
+        model: gpt-6.2-sol
       frontier:
-        model: gpt-6.1-sol
+        model: gpt-6.2-sol
     reasoning_effort_map:
       low: low
       medium: medium
