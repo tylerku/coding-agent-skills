@@ -1,7 +1,7 @@
 version: 1
 
 metadata:
-  verified_on: "2026-09-03"
+  verified_on: "2026-11-21"
   sources:
     openai: https://developers.openai.com/api/docs/guides/latest-model
     anthropic: https://platform.claude.com/docs/en/models/overview
@@ -13,9 +13,9 @@ providers:
     preferred_runner: codex
     capability_tiers:
       advanced:
-        model: gpt-5.6-terra
+        model: gpt-6.2-sol
       frontier:
-        model: gpt-5.6-sol
+        model: gpt-6.2-sol
     reasoning_effort_map:
       high: high
 
